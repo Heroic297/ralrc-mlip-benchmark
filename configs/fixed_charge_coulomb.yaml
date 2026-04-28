@@ -1,0 +1,10 @@
+name: fixed_charge_coulomb
+use_charge: false
+use_coulomb: true
+hidden: 64
+epochs: 150
+lr: 1.0e-3
+w_E: 1.0
+w_F: 100.0
+h5_path: data/transition1x.h5
+splits_json: splits.json
