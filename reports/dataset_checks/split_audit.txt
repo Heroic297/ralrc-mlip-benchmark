@@ -1,0 +1,31 @@
+﻿=== Split sizes ===
+train: formulas= 155 reactions=  9561
+val  : formulas=   8 reactions=   225
+test : formulas=   8 reactions=   287
+
+=== Formula overlap ===
+train vs val  : overlap=   0 union= 163 jaccard=0.00%
+train vs test : overlap=   0 union= 163 jaccard=0.00%
+val   vs test : overlap=   0 union=  16 jaccard=0.00%
+
+=== Reaction ID overlap ===
+train vs val  : overlap=   0 union= 9786 jaccard=0.0000%
+train vs test : overlap=   0 union= 9848 jaccard=0.0000%
+val   vs test : overlap=   0 union=  512 jaccard=0.0000%
+
+=== Endpoint hash overlap ===
+
+endpoint = reactant
+train vs val  : overlap=   0 union= 1979 jaccard=0.0000%
+train vs test : overlap=   0 union= 1984 jaccard=0.0000%
+val   vs test : overlap=   0 union=  123 jaccard=0.0000%
+
+endpoint = product
+train vs val  : overlap=   0 union= 9786 jaccard=0.0000%
+train vs test : overlap=   0 union= 9848 jaccard=0.0000%
+val   vs test : overlap=   0 union=  512 jaccard=0.0000%
+
+endpoint = transition_state
+train vs val  : overlap=   0 union= 9785 jaccard=0.0000%
+train vs test : overlap=   0 union= 9847 jaccard=0.0000%
+val   vs test : overlap=   0 union=  512 jaccard=0.0000%
