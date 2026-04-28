@@ -101,3 +101,15 @@ def test_no_full_load(h5_available):
     after = proc.memory_info().rss
     delta_mb = (after - before) / 1e6
     assert delta_mb < 500, f"Memory grew by {delta_mb:.1f} MB for 3 reactions — possible full load"
+
+def test_default_splits_exclude_aggregate_data(h5_available):
+    from src.ralrc.transition1x import iter_transition1x
+
+    seen = set()
+    for i, s in enumerate(iter_transition1x(h5_available)):
+        seen.add(s["split"])
+        if i > 1000:
+            break
+
+    assert "data" not in seen
+    assert seen <= {"train", "val", "test"}

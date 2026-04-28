@@ -99,7 +99,7 @@ def iter_transition1x(
         raise FileNotFoundError(h5_path)
 
     with h5py.File(h5_path, "r", swmr=False) as f:
-        available_splits = list(f.keys())
+        available_splits = [s for s in ("train", "val", "test") if s in f]
         target_splits = splits if splits is not None else available_splits
 
         rxn_count = 0
@@ -164,7 +164,7 @@ class Transition1xDataset:
 
     def _build_index(self):
         with h5py.File(self.h5_path, "r") as f:
-            available = list(f.keys())
+            available = [s for s in ("train", "val", "test") if s in f]
             target_splits = self.splits if self.splits else available
             for split in target_splits:
                 if split not in f:
