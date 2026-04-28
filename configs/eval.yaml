@@ -1,0 +1,67 @@
+﻿# configs/eval.yaml
+# Evaluation configuration for RALRC MLIP Benchmark
+# --------------------------------------------------
+
+name: ralrc_evaluation
+
+checkpoint_dir: checkpoints/
+results_dir: benchmarks/
+
+metrics:
+  # Primary scientific metrics
+  barrier_mae:
+    enabled: true
+    unit: eV
+    description: "MAE on Transition1x IRC energy barrier heights"
+    success_threshold_vs_baseline: 0.20   # 20% improvement = weak signal
+
+  ts_force_mae:
+    enabled: true
+    unit: eV/Ang
+    description: "Force MAE specifically at TS-neighbourhood frames (|s| < 0.1 IRC)"
+    success_threshold_vs_baseline: 0.15
+
+  force_mae_overall:
+    enabled: true
+    unit: eV/Ang
+
+  energy_mae_overall:
+    enabled: true
+    unit: eV
+
+  ood_degradation:
+    enabled: true
+    description: "Ratio test_MAE / val_MAE; lower = better OOD transfer"
+    compute_on: [transition1x_test, spice_ood_charged]
+
+  charge_neutrals_regression:
+    enabled: true
+    description: "Energy/force MAE on neutral molecules must not increase"
+
+  # Coulomb long-range probe
+  coulomb_qualitative:
+    enabled: true
+    description: "Check E ~ 1/r for separated charged fragments (r=5..20 Ang)"
+
+seeds: [17, 29, 43]
+aggregate: median_of_seeds
+
+# Conclusiveness thresholds (â‰¥3 must be met for CONCLUSIVE classification)
+conclusiveness:
+  min_criteria_met: 3
+  criteria:
+    - barrier_mae_improvement_pct >= 20
+    - ts_force_mae_improvement_pct >= 15
+    - ood_degradation_ratio_decreases: true
+    - charged_ion_tests_improve_no_neutral_regression: true
+    - nve_nvt_md_stability_improves: true
+    - coulomb_qualitative_correct: true
+    - runtime_within_2x_local_mace: true
+    - reproduces_across_all_seeds: true
+    - ablations_isolate_charge_longrange: true
+
+output:
+  save_predictions: true
+  save_per_reaction: true
+  csv: benchmarks/benchmark_results.csv
+  report: reports/final_report.md

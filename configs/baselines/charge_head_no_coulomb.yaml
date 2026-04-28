@@ -1,0 +1,36 @@
+﻿# configs/baselines/charge_head_no_coulomb.yaml
+# Baseline: charge-conditioned head, NO long-range Coulomb term
+# -------------------------------------------------------------
+# Ablation that isolates whether the *charge head alone* (without Coulomb)
+# improves results.  Gain here = benefit of charge information flow.
+# Gain of learned_charge_coulomb OVER this = benefit of explicit Coulomb.
+
+name: charge_head_no_coulomb
+
+model:
+  architecture: ChargeAwarePotential
+  use_charge: true
+  use_coulomb: false
+  charge_mode: learned           # charges predicted but not used in energy
+  hidden: 128
+  n_layers: 3
+  cutoff_ang: 5.0
+  n_species: 36
+  softening_init: 0.5
+
+training:
+  lr: 1.0e-3
+  lr_scheduler: cosine_annealing
+  batch_size: 8
+  epochs: 200
+  force_weight: 100.0
+  energy_weight: 1.0
+  grad_clip_norm: 10.0
+  seed: 17
+  ema_decay: 0.999
+
+data:
+  config: configs/transition1x_spice.yaml
+  split_strategy: reaction_family
+
+checkpoint_dir: checkpoints/charge_head_no_coulomb/

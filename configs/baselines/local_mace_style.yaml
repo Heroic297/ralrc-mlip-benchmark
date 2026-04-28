@@ -1,0 +1,34 @@
+﻿# configs/baselines/local_mace_style.yaml
+# Baseline: local MACE-style MLIP, NO charge conditioning, NO Coulomb
+# -------------------------------------------------------------------
+# This is the control. All other models must beat this on the same data split.
+
+name: local_mace_style
+
+model:
+  architecture: ChargeAwarePotential
+  use_charge: false
+  use_coulomb: false
+  charge_mode: none
+  hidden: 128
+  n_layers: 3
+  cutoff_ang: 5.0
+  n_species: 36
+  softening_init: 0.5   # unused when use_coulomb=false
+
+training:
+  lr: 1.0e-3
+  lr_scheduler: cosine_annealing
+  batch_size: 8
+  epochs: 200
+  force_weight: 100.0    # Î»_F in loss = MAE_E + Î»_F * MAE_F
+  energy_weight: 1.0
+  grad_clip_norm: 10.0
+  seed: 17
+  ema_decay: 0.999
+
+data:
+  config: configs/transition1x_spice.yaml
+  split_strategy: reaction_family
+
+checkpoint_dir: checkpoints/local_mace_style/

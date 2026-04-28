@@ -1,0 +1,54 @@
+﻿# configs/md.yaml
+# Molecular dynamics stability test configuration
+# ------------------------------------------------
+# Tests whether the potential supports stable NVE/NVT trajectories.
+# Instability (energy drift, exploding forces) = practical failure mode.
+
+name: ralrc_md_stability
+
+# Test molecules (small, gas-phase, to isolate MLIP quality from periodic effects)
+systems:
+  - name: ethanol_neutral
+    smiles: "CCO"
+    charge: 0
+    spin: 1
+    n_replicas: 3
+
+  - name: methylammonium_cation
+    smiles: "C[NH3+]"
+    charge: 1
+    spin: 1
+    n_replicas: 3
+
+  - name: acetate_anion
+    smiles: "CC(=O)[O-]"
+    charge: -1
+    spin: 1
+    n_replicas: 3
+
+  - name: glycine_zwitterion
+    smiles: "[NH3+]CC(=O)[O-]"
+    charge: 0
+    spin: 1
+    n_replicas: 3
+
+integrator:
+  type: velocity_verlet
+  timestep_fs: 0.5
+  n_steps_nvt: 5000     # 2.5 ps equilibration at 300 K
+  n_steps_nve: 5000     # 2.5 ps production NVE
+
+thermostat:
+  type: langevin
+  temperature_K: 300.0
+  friction_ps: 1.0
+  seed: 17
+
+stability_criteria:
+  max_energy_drift_eV_per_atom_per_ps: 0.01   # NVE drift threshold
+  max_force_norm_eV_per_Ang: 50.0             # per-atom force cap
+  min_survival_frac: 0.9                       # fraction of replicas not crashing
+
+output_dir: md_trajectories/
+log_interval_steps: 100
+save_trajectory: true

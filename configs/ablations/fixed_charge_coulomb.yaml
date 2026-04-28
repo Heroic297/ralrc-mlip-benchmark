@@ -1,0 +1,37 @@
+﻿# configs/ablations/fixed_charge_coulomb.yaml
+# Ablation: fixed (non-learned) integer charges + Coulomb
+# --------------------------------------------------------
+# Charges are taken as formal integer charges (input Q_total distributed
+# uniformly).  Tests whether LEARNED charges are needed or if crude
+# charge assignment + Coulomb already helps.
+
+name: fixed_charge_coulomb
+
+model:
+  architecture: ChargeAwarePotential
+  use_charge: true
+  use_coulomb: true
+  charge_mode: fixed              # q_i = Q_total / N (uniform, not learned)
+  hidden: 128
+  n_layers: 3
+  cutoff_ang: 5.0
+  n_species: 36
+  softening_init: 0.5
+  lambda_coul: 1.0
+
+training:
+  lr: 1.0e-3
+  lr_scheduler: cosine_annealing
+  batch_size: 8
+  epochs: 200
+  force_weight: 100.0
+  energy_weight: 1.0
+  grad_clip_norm: 10.0
+  seed: 17
+  ema_decay: 0.999
+
+data:
+  config: configs/transition1x_spice.yaml
+  split_strategy: reaction_family
+
+checkpoint_dir: checkpoints/fixed_charge_coulomb/

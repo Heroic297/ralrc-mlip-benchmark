@@ -1,0 +1,50 @@
+﻿# configs/transition1x_spice.yaml
+# Dataset configuration for RALRC MLIP Benchmark
+# ------------------------------------------------
+# Inputs:  Transition1x (reactive IRC paths, DFT barriers, TS geometries)
+#          SPICE v1/v2   (charged + neutral drug-fragment MD snapshots)
+# NOTE:    Real training requires downloading these datasets manually.
+#          See README.md for download instructions.
+
+name: transition1x_spice_combined
+
+datasets:
+  transition1x:
+    enabled: true
+    path: data/transition1x          # HDF5 or NPZ cache produced by data.py
+    # Original source: https://zenodo.org/record/7998850
+    split_strategy: reaction_family  # defined in split.py
+    include_ts: true                 # include transition-state frames
+    energy_unit: eV
+    force_unit: eV/Ang
+    # Filtering
+    max_atoms: 60
+    allowed_elements: [H, C, N, O, F, S, Cl, Br]
+
+  spice:
+    enabled: true
+    path: data/spice                 # HDF5 or NPZ cache
+    # Original source: https://github.com/openmm/spice-dataset
+    version: "2"
+    split_strategy: molecule_scaffold
+    energy_unit: eV
+    force_unit: eV/Ang
+    max_atoms: 80
+    include_charges: true            # use DFT Mulliken/ESP charges as labels
+
+combined:
+  shuffle_seed: 17
+  train_frac: 0.80
+  val_frac:   0.10
+  test_frac:  0.10
+  leakage_check: true               # enforced by split.py â€“ no rxn family leak
+
+# Preprocessing
+normalize_energies: true            # per-species atomic reference subtraction
+subtract_atomic_refs: true
+atomic_ref_file: data/atomic_refs.json
+
+# DataLoader
+batch_size: 8                       # graphs; accumulate if GPU OOM
+num_workers: 4
+pin_memory: true

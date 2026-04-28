@@ -1,0 +1,144 @@
+﻿# RALRC MLIP Benchmark â€” Final Report
+
+> **Status:** Template â€” NOT a completed result. Populate after real training.
+> **Classification:** INCONCLUSIVE until success criteria are met (see below).
+
+---
+
+## 1. Scientific Hypothesis
+
+A local equivariant MACE-style MLIP augmented with:
+- Explicit total-charge conditioning (Q_total input)
+- Learned geometry-dependent conserved partial charges (charge_head)
+- A shielded long-range Coulomb term (softened 1/r)
+
+improves **out-of-distribution reactive accuracy** and **MD stability**
+versus a same-data tuned local MACE baseline, without regressing on neutral molecules.
+
+Energy decomposition:
+E_total = E_local + Î»_coul * E_coul + E_ref
+E_local = Î£_i E_i^MACE
+q_raw_i = charge_head(h_i)
+q_i = q_raw_i + (Q - Î£_j q_raw_j) / N # exact charge conservation
+E_coul = k_e * Î£_{i<j} q_i q_j / sqrt(r_ij^2 + softplus(a_ZiZj)^2)
+F_i = -âˆ‡_{R_i} E_total
+
+
+---
+
+## 2. Experimental Setup
+
+| Parameter | Value |
+|-----------|-------|
+| Training data | Transition1x + SPICE v2 (combined) |
+| Split strategy | Reaction-family leakage-safe split |
+| Seeds | 17, 29, 43 |
+| Baseline | local_mace_style (same data, no charge/Coulomb) |
+| Hardware | (fill in: GPU model, VRAM) |
+| Training time | (fill in: hours per seed) |
+
+### Models Compared
+
+| Config | use_charge | use_coulomb | charge_mode |
+|--------|-----------|-------------|-------------|
+| local_mace_style | No | No | none |
+| charge_head_no_coulomb | Yes | No | learned |
+| fixed_charge_coulomb | Yes | Yes | fixed (Q/N) |
+| learned_charge_coulomb | Yes | Yes | learned |
+
+---
+
+## 3. Results
+
+> Fill in from `benchmarks/benchmark_results.csv` after training.
+
+### 3.1 Primary Metrics (median over seeds 17/29/43)
+
+| Model | Barrier MAE (eV) | TS-Force MAE (eV/Ã…) | OOD Degradation | Status |
+|-------|-----------------|---------------------|-----------------|--------|
+| local_mace_style | â€” | â€” | â€” | pending |
+| charge_head_no_coulomb | â€” | â€” | â€” | pending |
+| fixed_charge_coulomb | â€” | â€” | â€” | pending |
+| learned_charge_coulomb | â€” | â€” | â€” | pending |
+
+### 3.2 Improvement vs Baseline (learned_charge_coulomb vs local_mace_style)
+
+| Metric | Improvement (%) | Threshold | Met? |
+|--------|----------------|-----------|------|
+| Barrier MAE | â€” | â‰¥20% | â€” |
+| TS-Force MAE | â€” | â‰¥15% | â€” |
+| OOD degradation factor | â€” | decreases | â€” |
+| Charged/ion tests | â€” | improves | â€” |
+| NVE/NVT MD stability | â€” | improves | â€” |
+| Coulomb qualitative | â€” | correct | â€” |
+| Runtime vs baseline | â€” | â‰¤2Ã— | â€” |
+| Reproducible (3 seeds) | â€” | yes | â€” |
+| Ablations isolate cause | â€” | yes | â€” |
+
+**Criteria met: â€” / 9**
+
+---
+
+## 4. Conclusiveness Classification
+
+*(Fill in after runs)*
+
+- [ ] **CONCLUSIVE** â€” â‰¥3 criteria met, all reproducible, ablations confirm mechanism
+- [ ] **INCONCLUSIVE** â€” <3 criteria met OR not reproducible across seeds
+- [ ] **BENCHMARK-ONLY** â€” Tests pass, no real training data used
+- [ ] **NEGATIVE RESULT** â€” Proposed model does NOT outperform baseline (valid scientific outcome)
+
+### Current Classification: **BENCHMARK-ONLY / INCONCLUSIVE**
+*No real Transition1x or SPICE training data has been used. All CSV values are placeholders.*
+
+---
+
+## 5. Ablation Analysis
+
+*(Fill in: does the gain come from charge conditioning, from Coulomb, or both?)*
+
+| Ablation | Finding |
+|----------|---------|
+| local_mace_style â†’ charge_head_no_coulomb | (charge head alone contribution) |
+| charge_head_no_coulomb â†’ fixed_charge_coulomb | (Coulomb with fixed charges contribution) |
+| fixed_charge_coulomb â†’ learned_charge_coulomb | (learned charges contribution) |
+
+---
+
+## 6. Failure Modes Encountered
+
+*(Cross-reference `reports/failure_modes.md`)*
+
+- [ ] Charge collapse (Section 1.1)
+- [ ] Force discontinuity (Section 2.1)
+- [ ] Î»_coul collapse (Section 3.3)
+- [ ] NVE drift (Section 4.1)
+- [ ] Neutral regression (Section 5.1)
+
+---
+
+## 7. Limitations & Next Steps
+
+1. **Data scale:** Transition1x has ~10k reactions; MACE-style models typically need 100k+ for robust OOD.
+2. **Periodic systems:** This benchmark is gas-phase only. Ewald/PME needed for condensed-phase extension.
+3. **Spin:** Spin multiplicity S is not yet used by the model (stub ignores it).
+4. **Charge supervision:** If SPICE ESP charges are not used as labels, the charge head is purely self-supervised.
+5. **Long-range cutoff:** The Coulomb term uses the same cutoff as local interactions â€” true long-range requires Ewald.
+
+---
+
+## 8. Reproducibility Checklist
+
+- [ ] All random seeds fixed (17, 29, 43)
+- [ ] Data splits frozen before any hyperparameter tuning
+- [ ] Hyperparameters not tuned on test set
+- [ ] All configs committed to `configs/`
+- [ ] `benchmark_results.csv` populated with real values
+- [ ] `failure_modes.md` updated with observed pathologies
+- [ ] Model checkpoints archived
+
+---
+
+*Report generated by RALRC MLIP Benchmark harness.*
+*This is a falsifiable benchmark, not a validated result.*
+*Classify as INCONCLUSIVE until all real training runs complete.*

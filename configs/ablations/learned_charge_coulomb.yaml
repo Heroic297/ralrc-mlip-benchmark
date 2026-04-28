@@ -1,0 +1,40 @@
+﻿# configs/ablations/learned_charge_coulomb.yaml
+# Full model: learned geometry-dependent charges + shielded Coulomb
+# -----------------------------------------------------------------
+# This is the PROPOSED model being tested.
+# All ablations are compared against this.
+
+name: learned_charge_coulomb
+
+model:
+  architecture: ChargeAwarePotential
+  use_charge: true
+  use_coulomb: true
+  charge_mode: learned            # q_i predicted by charge_head(h_i), conserved
+  hidden: 128
+  n_layers: 3
+  cutoff_ang: 5.0
+  n_species: 36
+  softening_init: 0.5             # initial softening parameter a (learned)
+  lambda_coul: 1.0                # initial Coulomb weight Î»_coul (can be learned)
+  learn_lambda_coul: true         # allow Î»_coul to be optimised
+  learn_softening: true           # allow a_ZiZj to be optimised per species pair
+
+training:
+  lr: 1.0e-3
+  lr_scheduler: cosine_annealing
+  batch_size: 8
+  epochs: 200
+  force_weight: 100.0
+  energy_weight: 1.0
+  grad_clip_norm: 10.0
+  seed: 17
+  ema_decay: 0.999
+  # Auxiliary charge supervision (if SPICE provides ESP charges)
+  charge_aux_weight: 0.1         # Î»_q in loss; set 0 to disable
+
+data:
+  config: configs/transition1x_spice.yaml
+  split_strategy: reaction_family
+
+checkpoint_dir: checkpoints/learned_charge_coulomb/
