@@ -11,3 +11,4 @@ fixed_charge_coulomb,43,not_run_no_data,not_run_no_data,not_run_no_data,not_run_
 learned_charge_coulomb,17,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,pending
 learned_charge_coulomb,29,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,pending
 learned_charge_coulomb,43,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,not_run_no_data,pending
+local_mace_style,runs/local_mace_style/seed17/best.pt,37589.906466,7.654723,94.52,6.978935,1.206,0.09146185582257006,41020,29346

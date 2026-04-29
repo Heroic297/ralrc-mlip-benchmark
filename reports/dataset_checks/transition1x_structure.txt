@@ -1,0 +1,3641 @@
+﻿FILE: data\raw\Transition1x.h5
+ROOT KEYS: ['data', 'test', 'train', 'val']
+
+GROUP   data
+
+GROUP   data/C2H2N2O
+
+GROUP   data/C2H2N2O/rxn2091
+
+DATASET data/C2H2N2O/rxn2091/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2091/positions
+  shape: (658, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2091/product
+
+DATASET data/C2H2N2O/rxn2091/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2091/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2091/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2091/reactant
+
+DATASET data/C2H2N2O/rxn2091/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2091/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2091/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2091/transition_state
+
+DATASET data/C2H2N2O/rxn2091/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2091/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2091/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/wB97x_6-31G(d).energy
+  shape: (658,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2091/wB97x_6-31G(d).forces
+  shape: (658, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2092
+
+DATASET data/C2H2N2O/rxn2092/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2092/positions
+  shape: (386, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2092/product
+
+DATASET data/C2H2N2O/rxn2092/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2092/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2092/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2092/reactant
+
+DATASET data/C2H2N2O/rxn2092/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2092/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2092/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2092/transition_state
+
+DATASET data/C2H2N2O/rxn2092/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2092/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2092/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/wB97x_6-31G(d).energy
+  shape: (386,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2092/wB97x_6-31G(d).forces
+  shape: (386, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2093
+
+DATASET data/C2H2N2O/rxn2093/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2093/positions
+  shape: (186, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2093/product
+
+DATASET data/C2H2N2O/rxn2093/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2093/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2093/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2093/reactant
+
+DATASET data/C2H2N2O/rxn2093/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2093/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2093/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2093/transition_state
+
+DATASET data/C2H2N2O/rxn2093/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2093/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2093/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/wB97x_6-31G(d).energy
+  shape: (186,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2093/wB97x_6-31G(d).forces
+  shape: (186, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2545
+
+DATASET data/C2H2N2O/rxn2545/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2545/positions
+  shape: (186, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2545/product
+
+DATASET data/C2H2N2O/rxn2545/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2545/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2545/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2545/reactant
+
+DATASET data/C2H2N2O/rxn2545/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2545/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2545/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2545/transition_state
+
+DATASET data/C2H2N2O/rxn2545/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2545/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2545/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/wB97x_6-31G(d).energy
+  shape: (186,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2545/wB97x_6-31G(d).forces
+  shape: (186, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2546
+
+DATASET data/C2H2N2O/rxn2546/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2546/positions
+  shape: (290, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2546/product
+
+DATASET data/C2H2N2O/rxn2546/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2546/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2546/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2546/reactant
+
+DATASET data/C2H2N2O/rxn2546/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2546/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2546/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2546/transition_state
+
+DATASET data/C2H2N2O/rxn2546/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2546/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2546/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/wB97x_6-31G(d).energy
+  shape: (290,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2546/wB97x_6-31G(d).forces
+  shape: (290, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2547
+
+DATASET data/C2H2N2O/rxn2547/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2547/positions
+  shape: (442, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2547/product
+
+DATASET data/C2H2N2O/rxn2547/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2547/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2547/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2547/reactant
+
+DATASET data/C2H2N2O/rxn2547/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2547/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2547/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn2547/transition_state
+
+DATASET data/C2H2N2O/rxn2547/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn2547/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn2547/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/wB97x_6-31G(d).energy
+  shape: (442,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn2547/wB97x_6-31G(d).forces
+  shape: (442, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3121
+
+DATASET data/C2H2N2O/rxn3121/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3121/positions
+  shape: (522, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3121/product
+
+DATASET data/C2H2N2O/rxn3121/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3121/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3121/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3121/reactant
+
+DATASET data/C2H2N2O/rxn3121/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3121/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3121/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3121/transition_state
+
+DATASET data/C2H2N2O/rxn3121/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3121/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3121/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/wB97x_6-31G(d).energy
+  shape: (522,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3121/wB97x_6-31G(d).forces
+  shape: (522, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3122
+
+DATASET data/C2H2N2O/rxn3122/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3122/positions
+  shape: (258, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3122/product
+
+DATASET data/C2H2N2O/rxn3122/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3122/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3122/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3122/reactant
+
+DATASET data/C2H2N2O/rxn3122/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3122/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3122/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3122/transition_state
+
+DATASET data/C2H2N2O/rxn3122/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3122/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3122/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/wB97x_6-31G(d).energy
+  shape: (258,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3122/wB97x_6-31G(d).forces
+  shape: (258, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3123
+
+DATASET data/C2H2N2O/rxn3123/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3123/positions
+  shape: (314, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3123/product
+
+DATASET data/C2H2N2O/rxn3123/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3123/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3123/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3123/reactant
+
+DATASET data/C2H2N2O/rxn3123/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3123/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3123/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3123/transition_state
+
+DATASET data/C2H2N2O/rxn3123/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3123/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3123/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/wB97x_6-31G(d).energy
+  shape: (314,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3123/wB97x_6-31G(d).forces
+  shape: (314, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3124
+
+DATASET data/C2H2N2O/rxn3124/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3124/positions
+  shape: (306, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3124/product
+
+DATASET data/C2H2N2O/rxn3124/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3124/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3124/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3124/reactant
+
+DATASET data/C2H2N2O/rxn3124/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3124/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3124/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3124/transition_state
+
+DATASET data/C2H2N2O/rxn3124/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3124/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3124/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/wB97x_6-31G(d).energy
+  shape: (306,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3124/wB97x_6-31G(d).forces
+  shape: (306, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3125
+
+DATASET data/C2H2N2O/rxn3125/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3125/positions
+  shape: (458, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3125/product
+
+DATASET data/C2H2N2O/rxn3125/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3125/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3125/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3125/reactant
+
+DATASET data/C2H2N2O/rxn3125/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3125/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3125/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3125/transition_state
+
+DATASET data/C2H2N2O/rxn3125/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3125/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3125/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/wB97x_6-31G(d).energy
+  shape: (458,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3125/wB97x_6-31G(d).forces
+  shape: (458, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3126
+
+DATASET data/C2H2N2O/rxn3126/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3126/positions
+  shape: (178, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3126/product
+
+DATASET data/C2H2N2O/rxn3126/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3126/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3126/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3126/reactant
+
+DATASET data/C2H2N2O/rxn3126/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3126/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3126/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3126/transition_state
+
+DATASET data/C2H2N2O/rxn3126/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3126/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3126/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/wB97x_6-31G(d).energy
+  shape: (178,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3126/wB97x_6-31G(d).forces
+  shape: (178, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3127
+
+DATASET data/C2H2N2O/rxn3127/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3127/positions
+  shape: (1578, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3127/product
+
+DATASET data/C2H2N2O/rxn3127/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3127/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3127/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3127/reactant
+
+DATASET data/C2H2N2O/rxn3127/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3127/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3127/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn3127/transition_state
+
+DATASET data/C2H2N2O/rxn3127/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn3127/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn3127/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/wB97x_6-31G(d).energy
+  shape: (1578,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn3127/wB97x_6-31G(d).forces
+  shape: (1578, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn9455
+
+DATASET data/C2H2N2O/rxn9455/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn9455/positions
+  shape: (4218, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn9455/product
+
+DATASET data/C2H2N2O/rxn9455/product/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn9455/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn9455/product/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/product/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn9455/reactant
+
+DATASET data/C2H2N2O/rxn9455/reactant/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn9455/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn9455/reactant/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/reactant/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O/rxn9455/transition_state
+
+DATASET data/C2H2N2O/rxn9455/transition_state/atomic_numbers
+  shape: (7,)
+  dtype: int32
+
+DATASET data/C2H2N2O/rxn9455/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O/rxn9455/transition_state/positions
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 7, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/wB97x_6-31G(d).energy
+  shape: (4218,)
+  dtype: float64
+
+DATASET data/C2H2N2O/rxn9455/wB97x_6-31G(d).forces
+  shape: (4218, 7, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2
+
+GROUP   data/C2H2N2O2/rxn3534
+
+DATASET data/C2H2N2O2/rxn3534/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3534/positions
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3534/product
+
+DATASET data/C2H2N2O2/rxn3534/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3534/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3534/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3534/reactant
+
+DATASET data/C2H2N2O2/rxn3534/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3534/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3534/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3534/transition_state
+
+DATASET data/C2H2N2O2/rxn3534/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3534/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3534/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/wB97x_6-31G(d).energy
+  shape: (290,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3534/wB97x_6-31G(d).forces
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3535
+
+DATASET data/C2H2N2O2/rxn3535/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3535/positions
+  shape: (1322, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3535/product
+
+DATASET data/C2H2N2O2/rxn3535/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3535/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3535/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3535/reactant
+
+DATASET data/C2H2N2O2/rxn3535/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3535/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3535/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3535/transition_state
+
+DATASET data/C2H2N2O2/rxn3535/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3535/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3535/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/wB97x_6-31G(d).energy
+  shape: (1322,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3535/wB97x_6-31G(d).forces
+  shape: (1322, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3536
+
+DATASET data/C2H2N2O2/rxn3536/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3536/positions
+  shape: (1170, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3536/product
+
+DATASET data/C2H2N2O2/rxn3536/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3536/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3536/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3536/reactant
+
+DATASET data/C2H2N2O2/rxn3536/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3536/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3536/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3536/transition_state
+
+DATASET data/C2H2N2O2/rxn3536/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3536/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3536/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/wB97x_6-31G(d).energy
+  shape: (1170,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3536/wB97x_6-31G(d).forces
+  shape: (1170, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3537
+
+DATASET data/C2H2N2O2/rxn3537/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3537/positions
+  shape: (202, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3537/product
+
+DATASET data/C2H2N2O2/rxn3537/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3537/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3537/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3537/reactant
+
+DATASET data/C2H2N2O2/rxn3537/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3537/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3537/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3537/transition_state
+
+DATASET data/C2H2N2O2/rxn3537/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3537/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3537/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/wB97x_6-31G(d).energy
+  shape: (202,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3537/wB97x_6-31G(d).forces
+  shape: (202, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3878
+
+DATASET data/C2H2N2O2/rxn3878/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3878/positions
+  shape: (154, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3878/product
+
+DATASET data/C2H2N2O2/rxn3878/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3878/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3878/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3878/reactant
+
+DATASET data/C2H2N2O2/rxn3878/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3878/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3878/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3878/transition_state
+
+DATASET data/C2H2N2O2/rxn3878/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3878/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3878/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/wB97x_6-31G(d).energy
+  shape: (154,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3878/wB97x_6-31G(d).forces
+  shape: (154, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3879
+
+DATASET data/C2H2N2O2/rxn3879/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3879/positions
+  shape: (362, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3879/product
+
+DATASET data/C2H2N2O2/rxn3879/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3879/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3879/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3879/reactant
+
+DATASET data/C2H2N2O2/rxn3879/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3879/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3879/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn3879/transition_state
+
+DATASET data/C2H2N2O2/rxn3879/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn3879/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn3879/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/wB97x_6-31G(d).energy
+  shape: (362,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn3879/wB97x_6-31G(d).forces
+  shape: (362, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn9393
+
+DATASET data/C2H2N2O2/rxn9393/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn9393/positions
+  shape: (2570, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn9393/product
+
+DATASET data/C2H2N2O2/rxn9393/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn9393/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn9393/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn9393/reactant
+
+DATASET data/C2H2N2O2/rxn9393/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn9393/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn9393/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N2O2/rxn9393/transition_state
+
+DATASET data/C2H2N2O2/rxn9393/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N2O2/rxn9393/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N2O2/rxn9393/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/wB97x_6-31G(d).energy
+  shape: (2570,)
+  dtype: float64
+
+DATASET data/C2H2N2O2/rxn9393/wB97x_6-31G(d).forces
+  shape: (2570, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4
+
+GROUP   data/C2H2N4/rxn0127
+
+DATASET data/C2H2N4/rxn0127/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0127/positions
+  shape: (434, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0127/product
+
+DATASET data/C2H2N4/rxn0127/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0127/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0127/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0127/reactant
+
+DATASET data/C2H2N4/rxn0127/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0127/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0127/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0127/transition_state
+
+DATASET data/C2H2N4/rxn0127/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0127/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0127/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/wB97x_6-31G(d).energy
+  shape: (434,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0127/wB97x_6-31G(d).forces
+  shape: (434, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0827
+
+DATASET data/C2H2N4/rxn0827/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0827/positions
+  shape: (394, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0827/product
+
+DATASET data/C2H2N4/rxn0827/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0827/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0827/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0827/reactant
+
+DATASET data/C2H2N4/rxn0827/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0827/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0827/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0827/transition_state
+
+DATASET data/C2H2N4/rxn0827/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0827/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0827/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/wB97x_6-31G(d).energy
+  shape: (394,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0827/wB97x_6-31G(d).forces
+  shape: (394, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0828
+
+DATASET data/C2H2N4/rxn0828/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0828/positions
+  shape: (202, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0828/product
+
+DATASET data/C2H2N4/rxn0828/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0828/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0828/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0828/reactant
+
+DATASET data/C2H2N4/rxn0828/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0828/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0828/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0828/transition_state
+
+DATASET data/C2H2N4/rxn0828/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0828/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0828/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/wB97x_6-31G(d).energy
+  shape: (202,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0828/wB97x_6-31G(d).forces
+  shape: (202, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0829
+
+DATASET data/C2H2N4/rxn0829/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0829/positions
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0829/product
+
+DATASET data/C2H2N4/rxn0829/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0829/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0829/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0829/reactant
+
+DATASET data/C2H2N4/rxn0829/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0829/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0829/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0829/transition_state
+
+DATASET data/C2H2N4/rxn0829/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0829/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0829/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/wB97x_6-31G(d).energy
+  shape: (226,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0829/wB97x_6-31G(d).forces
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0830
+
+DATASET data/C2H2N4/rxn0830/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0830/positions
+  shape: (738, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0830/product
+
+DATASET data/C2H2N4/rxn0830/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0830/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0830/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0830/reactant
+
+DATASET data/C2H2N4/rxn0830/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0830/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0830/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0830/transition_state
+
+DATASET data/C2H2N4/rxn0830/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0830/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0830/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/wB97x_6-31G(d).energy
+  shape: (738,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0830/wB97x_6-31G(d).forces
+  shape: (738, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0831
+
+DATASET data/C2H2N4/rxn0831/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0831/positions
+  shape: (274, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0831/product
+
+DATASET data/C2H2N4/rxn0831/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0831/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0831/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0831/reactant
+
+DATASET data/C2H2N4/rxn0831/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0831/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0831/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0831/transition_state
+
+DATASET data/C2H2N4/rxn0831/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0831/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0831/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/wB97x_6-31G(d).energy
+  shape: (274,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0831/wB97x_6-31G(d).forces
+  shape: (274, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0832
+
+DATASET data/C2H2N4/rxn0832/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0832/positions
+  shape: (218, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0832/product
+
+DATASET data/C2H2N4/rxn0832/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0832/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0832/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0832/reactant
+
+DATASET data/C2H2N4/rxn0832/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0832/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0832/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0832/transition_state
+
+DATASET data/C2H2N4/rxn0832/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0832/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0832/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/wB97x_6-31G(d).energy
+  shape: (218,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0832/wB97x_6-31G(d).forces
+  shape: (218, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0833
+
+DATASET data/C2H2N4/rxn0833/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0833/positions
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0833/product
+
+DATASET data/C2H2N4/rxn0833/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0833/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0833/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0833/reactant
+
+DATASET data/C2H2N4/rxn0833/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0833/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0833/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0833/transition_state
+
+DATASET data/C2H2N4/rxn0833/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0833/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0833/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/wB97x_6-31G(d).energy
+  shape: (226,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0833/wB97x_6-31G(d).forces
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0834
+
+DATASET data/C2H2N4/rxn0834/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0834/positions
+  shape: (946, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0834/product
+
+DATASET data/C2H2N4/rxn0834/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0834/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0834/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0834/reactant
+
+DATASET data/C2H2N4/rxn0834/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0834/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0834/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0834/transition_state
+
+DATASET data/C2H2N4/rxn0834/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0834/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0834/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/wB97x_6-31G(d).energy
+  shape: (946,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0834/wB97x_6-31G(d).forces
+  shape: (946, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0835
+
+DATASET data/C2H2N4/rxn0835/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0835/positions
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0835/product
+
+DATASET data/C2H2N4/rxn0835/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0835/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0835/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0835/reactant
+
+DATASET data/C2H2N4/rxn0835/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0835/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0835/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn0835/transition_state
+
+DATASET data/C2H2N4/rxn0835/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn0835/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn0835/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/wB97x_6-31G(d).energy
+  shape: (290,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn0835/wB97x_6-31G(d).forces
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2603
+
+DATASET data/C2H2N4/rxn2603/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2603/positions
+  shape: (786, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2603/product
+
+DATASET data/C2H2N4/rxn2603/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2603/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2603/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2603/reactant
+
+DATASET data/C2H2N4/rxn2603/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2603/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2603/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2603/transition_state
+
+DATASET data/C2H2N4/rxn2603/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2603/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2603/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/wB97x_6-31G(d).energy
+  shape: (786,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2603/wB97x_6-31G(d).forces
+  shape: (786, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2604
+
+DATASET data/C2H2N4/rxn2604/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2604/positions
+  shape: (306, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2604/product
+
+DATASET data/C2H2N4/rxn2604/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2604/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2604/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2604/reactant
+
+DATASET data/C2H2N4/rxn2604/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2604/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2604/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn2604/transition_state
+
+DATASET data/C2H2N4/rxn2604/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn2604/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn2604/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/wB97x_6-31G(d).energy
+  shape: (306,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn2604/wB97x_6-31G(d).forces
+  shape: (306, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn9029
+
+DATASET data/C2H2N4/rxn9029/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn9029/positions
+  shape: (1506, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn9029/product
+
+DATASET data/C2H2N4/rxn9029/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn9029/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn9029/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn9029/reactant
+
+DATASET data/C2H2N4/rxn9029/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn9029/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn9029/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2N4/rxn9029/transition_state
+
+DATASET data/C2H2N4/rxn9029/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H2N4/rxn9029/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2N4/rxn9029/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/wB97x_6-31G(d).energy
+  shape: (1506,)
+  dtype: float64
+
+DATASET data/C2H2N4/rxn9029/wB97x_6-31G(d).forces
+  shape: (1506, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H2O2
+
+GROUP   data/C2H2O2/rxn3279
+
+DATASET data/C2H2O2/rxn3279/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H2O2/rxn3279/positions
+  shape: (2082, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H2O2/rxn3279/product
+
+DATASET data/C2H2O2/rxn3279/product/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H2O2/rxn3279/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2O2/rxn3279/product/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/product/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H2O2/rxn3279/reactant
+
+DATASET data/C2H2O2/rxn3279/reactant/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H2O2/rxn3279/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2O2/rxn3279/reactant/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/reactant/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H2O2/rxn3279/transition_state
+
+DATASET data/C2H2O2/rxn3279/transition_state/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H2O2/rxn3279/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H2O2/rxn3279/transition_state/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/wB97x_6-31G(d).energy
+  shape: (2082,)
+  dtype: float64
+
+DATASET data/C2H2O2/rxn3279/wB97x_6-31G(d).forces
+  shape: (2082, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N
+
+GROUP   data/C2H3N/rxn2857
+
+DATASET data/C2H3N/rxn2857/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2857/positions
+  shape: (242, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2857/product
+
+DATASET data/C2H3N/rxn2857/product/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2857/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2857/product/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/product/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2857/reactant
+
+DATASET data/C2H3N/rxn2857/reactant/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2857/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2857/reactant/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/reactant/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2857/transition_state
+
+DATASET data/C2H3N/rxn2857/transition_state/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2857/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2857/transition_state/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/wB97x_6-31G(d).energy
+  shape: (242,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2857/wB97x_6-31G(d).forces
+  shape: (242, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2858
+
+DATASET data/C2H3N/rxn2858/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2858/positions
+  shape: (226, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2858/product
+
+DATASET data/C2H3N/rxn2858/product/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2858/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2858/product/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/product/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2858/reactant
+
+DATASET data/C2H3N/rxn2858/reactant/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2858/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2858/reactant/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/reactant/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N/rxn2858/transition_state
+
+DATASET data/C2H3N/rxn2858/transition_state/atomic_numbers
+  shape: (6,)
+  dtype: int32
+
+DATASET data/C2H3N/rxn2858/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N/rxn2858/transition_state/positions
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 6, 3)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/wB97x_6-31G(d).energy
+  shape: (226,)
+  dtype: float64
+
+DATASET data/C2H3N/rxn2858/wB97x_6-31G(d).forces
+  shape: (226, 6, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3
+
+GROUP   data/C2H3N3/rxn0295
+
+DATASET data/C2H3N3/rxn0295/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0295/positions
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0295/product
+
+DATASET data/C2H3N3/rxn0295/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0295/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0295/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0295/reactant
+
+DATASET data/C2H3N3/rxn0295/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0295/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0295/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0295/transition_state
+
+DATASET data/C2H3N3/rxn0295/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0295/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0295/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/wB97x_6-31G(d).energy
+  shape: (290,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0295/wB97x_6-31G(d).forces
+  shape: (290, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0296
+
+DATASET data/C2H3N3/rxn0296/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0296/positions
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0296/product
+
+DATASET data/C2H3N3/rxn0296/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0296/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0296/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0296/reactant
+
+DATASET data/C2H3N3/rxn0296/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0296/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0296/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0296/transition_state
+
+DATASET data/C2H3N3/rxn0296/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0296/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0296/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/wB97x_6-31G(d).energy
+  shape: (226,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0296/wB97x_6-31G(d).forces
+  shape: (226, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0297
+
+DATASET data/C2H3N3/rxn0297/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0297/positions
+  shape: (138, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0297/product
+
+DATASET data/C2H3N3/rxn0297/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0297/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0297/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0297/reactant
+
+DATASET data/C2H3N3/rxn0297/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0297/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0297/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0297/transition_state
+
+DATASET data/C2H3N3/rxn0297/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0297/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0297/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/wB97x_6-31G(d).energy
+  shape: (138,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0297/wB97x_6-31G(d).forces
+  shape: (138, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0298
+
+DATASET data/C2H3N3/rxn0298/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0298/positions
+  shape: (370, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0298/product
+
+DATASET data/C2H3N3/rxn0298/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0298/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0298/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0298/reactant
+
+DATASET data/C2H3N3/rxn0298/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0298/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0298/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0298/transition_state
+
+DATASET data/C2H3N3/rxn0298/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0298/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0298/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/wB97x_6-31G(d).energy
+  shape: (370,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0298/wB97x_6-31G(d).forces
+  shape: (370, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0299
+
+DATASET data/C2H3N3/rxn0299/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0299/positions
+  shape: (282, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0299/product
+
+DATASET data/C2H3N3/rxn0299/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0299/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0299/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0299/reactant
+
+DATASET data/C2H3N3/rxn0299/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0299/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0299/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0299/transition_state
+
+DATASET data/C2H3N3/rxn0299/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0299/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0299/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/wB97x_6-31G(d).energy
+  shape: (282,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0299/wB97x_6-31G(d).forces
+  shape: (282, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0300
+
+DATASET data/C2H3N3/rxn0300/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0300/positions
+  shape: (242, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0300/product
+
+DATASET data/C2H3N3/rxn0300/product/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0300/product/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0300/product/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/product/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/product/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0300/reactant
+
+DATASET data/C2H3N3/rxn0300/reactant/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0300/reactant/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0300/reactant/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/reactant/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/reactant/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0300/transition_state
+
+DATASET data/C2H3N3/rxn0300/transition_state/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0300/transition_state/hash
+  shape: ()
+  dtype: int64
+
+DATASET data/C2H3N3/rxn0300/transition_state/positions
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/transition_state/wB97x_6-31G(d).energy
+  shape: (1,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/transition_state/wB97x_6-31G(d).forces
+  shape: (1, 8, 3)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/wB97x_6-31G(d).energy
+  shape: (242,)
+  dtype: float64
+
+DATASET data/C2H3N3/rxn0300/wB97x_6-31G(d).forces
+  shape: (242, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0301
+
+DATASET data/C2H3N3/rxn0301/atomic_numbers
+  shape: (8,)
+  dtype: int32
+
+DATASET data/C2H3N3/rxn0301/positions
+  shape: (242, 8, 3)
+  dtype: float64
+
+GROUP   data/C2H3N3/rxn0301/product
+

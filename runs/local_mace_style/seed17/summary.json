@@ -1,0 +1,7 @@
+{
+  "best_val_force_mae_eV_ang": 9.180846463176877,
+  "best_epoch": 1,
+  "n_train_frames": 187296,
+  "n_val_frames": 59332,
+  "seed": 17
+}

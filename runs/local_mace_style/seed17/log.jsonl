@@ -1,0 +1,2 @@
+{"epoch": 0, "lr": 0.001, "train_loss": 60183.377287576855, "val_energy_mae_eV": 44042.111222785556, "val_force_mae_eV_ang": 25.630557620980642}
+{"epoch": 1, "lr": 0.0005005000000000001, "train_loss": 35022.53374244518, "val_energy_mae_eV": 47692.14741886756, "val_force_mae_eV_ang": 9.180846463176877}
