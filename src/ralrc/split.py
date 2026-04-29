@@ -60,9 +60,17 @@ def discover_reactions(h5_path: str | Path) -> list[dict]:
     if not h5_path.exists():
         raise FileNotFoundError(h5_path)
 
+    # Only index the canonical splits — "data" is an aggregate group in Transition1x
+    # that duplicates train/val/test reactions with the same rxn_ids.  Including it
+    # generates "data::<formula>::<rxn_id>" compound keys that the dataset loader never
+    # produces, so those keys are silently unmatchable during training/eval.
+    CANONICAL_SPLITS = {"train", "val", "test"}
+
     records = []
     with h5py.File(h5_path, "r") as f:
         for split in f.keys():
+            if split not in CANONICAL_SPLITS:
+                continue
             split_grp = f[split]
             if not isinstance(split_grp, h5py.Group):
                 continue
