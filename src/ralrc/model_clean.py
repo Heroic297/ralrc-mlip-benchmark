@@ -208,7 +208,7 @@ class ChargeAwarePotentialClean(nn.Module):
             F_neg = torch.autograd.grad(
                 E, R_diff,
                 create_graph=self.training,
-                retain_graph=False,
+                retain_graph=self.training,
             )[0]
             result["forces"] = -F_neg
 
