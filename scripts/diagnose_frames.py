@@ -1,23 +1,25 @@
-"""Diagnose frame count and force RMS imbalance across the pilot dataset.
+"""Diagnose frame and force balance in RALRC splits.
+
+Understands COMPOUND KEYS ("<hdf5_split>::<formula>::<rxn_id>").
 
 Usage:
-    python scripts/diagnose_frames.py --h5 data/transition1x.h5 --splits splits.json
-
-Outputs:
-    - Per-split frame count and median IRC path length
-    - Per-split force RMS distribution (median and IQR)
-    - Per-reaction frame count histogram
-    - Flags if train has < 80% of val frame count (potential bug)
+    python scripts/diagnose_frames.py \\
+        --h5 data/transition1x.h5 \\
+        --splits splits.json
 """
 from __future__ import annotations
 
 import argparse
 import json
-import sys
-from collections import defaultdict
 from pathlib import Path
+from collections import defaultdict
 
+import h5py
 import numpy as np
+
+
+def _compound_key(split: str, formula: str, rxn_id: str) -> str:
+    return f"{split}::{formula}::{rxn_id}"
 
 
 def main():
@@ -26,84 +28,90 @@ def main():
     p.add_argument("--splits", required=True)
     a = p.parse_args()
 
-    try:
-        import h5py
-    except ImportError:
-        print("h5py required: pip install h5py")
-        sys.exit(1)
-
     with open(a.splits) as f:
         splits = json.load(f)
 
-    train_rxns = set(splits["train_id"])
-    val_rxns   = set(splits["val_id"])
-    test_rxns  = set(splits["test_id_same_family"])
-    ood_rxns   = set(splits["test_ood_family"])
+    id_keys  = set(splits.get("test_id_same_family", []))
+    ood_keys = set(splits.get("test_ood_family", []))
+    train_keys = set(splits.get("train_id", []))
+    val_keys   = set(splits.get("val_id", []))
 
-    FORCES_KEY = "wB97x_6-31G(d).forces"
+    all_key_sets = {
+        "train": train_keys,
+        "val":   val_keys,
+        "test_id": id_keys,
+        "test_ood": ood_keys,
+    }
 
-    split_frames:  dict[str, list[int]]   = defaultdict(list)
-    split_f_rms:   dict[str, list[float]] = defaultdict(list)
+    # Check compound key format
+    sample = next(iter(train_keys), None)
+    if sample and "::" not in sample:
+        print(f"[diagnose] WARNING: splits appear to use bare rxn_ids, not compound keys.")
+        print(f"  Example: {sample!r}")
+        print(f"  Regenerate splits with: python -m ralrc.split --h5 {a.h5} --out splits.json")
+        return
+
+    print(f"[diagnose] Split sizes (reactions):")
+    for name, ks in all_key_sets.items():
+        print(f"  {name}: {len(ks)} reactions")
+
+    # Walk HDF5 and count matched frames per split
+    frame_counts  = defaultdict(int)
+    rxn_matches   = defaultdict(int)
+    force_norms   = defaultdict(list)  # per split: list of per-frame mean |F|
+    n_total = 0
 
     with h5py.File(a.h5, "r") as f:
-        for split_grp_name in f.keys():
-            grp = f[split_grp_name]
-            if not hasattr(grp, "items"):
+        for hdf_split in f.keys():
+            grp = f[hdf_split]
+            if not hasattr(grp, 'items'):
                 continue
-            for formula, fgrp in grp.items():
-                for rxn_id, rgrp in fgrp.items():
-                    if "positions" not in rgrp or FORCES_KEY not in rgrp:
+            for formula, frml_grp in grp.items():
+                if not hasattr(frml_grp, 'items'):
+                    continue
+                for rxn_id, rxn_grp in frml_grp.items():
+                    if not hasattr(rxn_grp, 'items'):
                         continue
-                    n = rgrp["positions"].shape[0]
-                    forces = rgrp[FORCES_KEY][()]  # (n_frames, n_atoms, 3)
-                    f_rms = float(np.sqrt((forces ** 2).mean()))
+                    if "positions" not in rxn_grp:
+                        continue
+                    ck = _compound_key(hdf_split, formula, rxn_id)
+                    n_frames = rxn_grp["positions"].shape[0]
+                    n_total += n_frames
 
-                    if rxn_id in train_rxns:
-                        label = "train"
-                    elif rxn_id in val_rxns:
-                        label = "val"
-                    elif rxn_id in test_rxns:
-                        label = "test_id"
-                    elif rxn_id in ood_rxns:
-                        label = "test_ood"
-                    else:
-                        label = "unassigned"
+                    for split_name, key_set in all_key_sets.items():
+                        if ck in key_set:
+                            frame_counts[split_name] += n_frames
+                            rxn_matches[split_name]  += 1
+                            # Sample force norms for first 5 frames to keep it fast
+                            fkey = "wB97x_6-31G(d).forces"
+                            if fkey in rxn_grp:
+                                n_sample = min(5, n_frames)
+                                for fi in range(n_sample):
+                                    fvec = rxn_grp[fkey][fi]  # (n_atoms, 3)
+                                    mean_norm = float(np.linalg.norm(fvec, axis=1).mean())
+                                    force_norms[split_name].append(mean_norm)
+                            break  # a key can only be in one split
 
-                    split_frames[label].append(n)
-                    split_f_rms[label].append(f_rms)
+    print(f"\n[diagnose] Dataset total frames: {n_total}")
+    print(f"[diagnose] Frame matches per split:")
+    for name in ["train", "val", "test_id", "test_ood"]:
+        fc = frame_counts.get(name, 0)
+        rc = rxn_matches.get(name, 0)
+        fn = force_norms.get(name, [])
+        fn_mean = float(np.mean(fn)) if fn else float("nan")
+        print(f"  {name:10s}: {fc:10d} frames | {rc:6d} reactions | "
+              f"mean |F| ~ {fn_mean:.4f} Ha/Å (sampled)")
 
-    print("\n=== Frame count statistics per split ===")
-    for label in ["train", "val", "test_id", "test_ood", "unassigned"]:
-        fc = split_frames.get(label, [])
-        if not fc:
-            continue
-        print(f"  {label:12s}: {len(fc):5d} reactions, "
-              f"{sum(fc):7d} total frames, "
-              f"median={np.median(fc):.1f}, min={min(fc)}, max={max(fc)}")
-
-    print("\n=== Force RMS statistics per split ===")
-    for label in ["train", "val", "test_id", "test_ood"]:
-        fr = split_f_rms.get(label, [])
-        if not fr:
-            continue
-        print(f"  {label:12s}: median={np.median(fr):.4f}, "
-              f"IQR=[{np.percentile(fr,25):.4f}, {np.percentile(fr,75):.4f}]")
-
-    # Imbalance check
-    tf = sum(split_frames.get("train", []))
-    vf = sum(split_frames.get("val",   []))
-    if vf > 0 and tf < 0.8 * vf:
-        print(f"\n[WARNING] Train has {tf} frames vs val {vf} "
-              f"({100*tf/vf:.1f}% ratio). This is the known pilot imbalance.")
-        print("Possible causes:")
-        print("  (a) Train reactions have genuinely shorter IRC paths.")
-        print("  (b) Sampling was done per-split not per-reaction (bug).")
-        print("  (c) Family split assigned long-path families to val.")
-        print("Check median IRC path length per split above.")
-        print("If median train path < median val path: cause (a) or (c).")
-        print("If medians are equal but totals differ: cause (b).")
+    # Sanity check
+    any_zero = any(frame_counts.get(n, 0) == 0 for n in ["train", "val", "test_id", "test_ood"])
+    if any_zero:
+        print("\n[diagnose] FAIL: one or more splits have 0 matched frames.")
+        print("  Possible causes:")
+        print("  1. splits.json was generated from a different HDF5 file")
+        print("  2. splits.json uses bare rxn_ids (no '::') instead of compound keys")
+        print("  3. --max-reactions too small for OOD families")
     else:
-        print(f"\n[OK] Frame balance train={tf} val={vf}")
+        print("\n[diagnose] PASS: all splits have nonzero frames.")
 
 
 if __name__ == "__main__":

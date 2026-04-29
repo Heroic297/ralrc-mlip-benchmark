@@ -3,6 +3,10 @@
 Loss:  L = w_E * MAE(E_pred, E_ref) + w_F * MAE(F_pred, F_ref)
   where w_F ~ 100 * w_E  (standard MLIP practice).
 
+Split membership uses COMPOUND KEYS: "<hdf5_split>::<formula>::<rxn_id>"
+so there are no false matches from bare rxn_id collisions across formulas
+or HDF5 splits.
+
 Usage:
     python -m ralrc.train --config configs/learned_charge_coulomb.yaml --seed 17
 """
@@ -38,16 +42,7 @@ HA_TO_EV = 27.2114
 # ---------------------------------------------------------------------------
 
 def _sample_to_tensors(sample: dict, device: torch.device):
-    """Convert a raw Transition1x sample dict to torch tensors on device.
-
-    Returns (Z, R, Q, S, E, F) where:
-        Z : (N,) long
-        R : (N,3) float32
-        Q : () long   (total charge, assumed 0 for neutral organics)
-        S : () long   (spin multiplicity, assumed 1)
-        E : () float32  (eV)
-        F : (N,3) float32  (eV/Å)
-    """
+    """Convert a raw Transition1x sample dict to torch tensors on device."""
     Z = torch.tensor(sample["z"], dtype=torch.long, device=device)
     R = torch.tensor(sample["pos"], dtype=torch.float32, device=device)
     Q = torch.zeros((), dtype=torch.long, device=device)
@@ -58,20 +53,17 @@ def _sample_to_tensors(sample: dict, device: torch.device):
 
 
 # ---------------------------------------------------------------------------
-# Atomization reference energies (wB97x/6-31G(d), in Ha)
-# Source: Transition1x paper supplementary; one value per element (H=1 .. F=9 etc.)
-# Using a simple linear-in-composition correction learned online.
+# Atomization reference energies
 # ---------------------------------------------------------------------------
 
 class AtomRefEnergy(nn.Module):
-    """Learnable per-element reference energies for atomization correction."""
+    """Learnable per-element reference energies."""
     def __init__(self, n_elements: int = 119):
         super().__init__()
         self.ref = nn.Embedding(n_elements, 1)
         nn.init.zeros_(self.ref.weight)
 
     def forward(self, Z: torch.Tensor) -> torch.Tensor:
-        """Return sum of reference energies for atom types Z."""
         return self.ref(Z).sum()
 
 
@@ -100,6 +92,19 @@ def energy_force_loss(
 
 
 # ---------------------------------------------------------------------------
+# Compound key helper
+# ---------------------------------------------------------------------------
+
+def _compound_key(entry: tuple) -> str:
+    """Build a globally unique key from a dataset index entry.
+
+    entry = (split, formula, rxn_id, frame_idx, endpoint)
+    key   = "<split>::<formula>::<rxn_id>"
+    """
+    return f"{entry[0]}::{entry[1]}::{entry[2]}"
+
+
+# ---------------------------------------------------------------------------
 # Main training function
 # ---------------------------------------------------------------------------
 
@@ -124,31 +129,53 @@ def train(
     os.makedirs(out_dir, exist_ok=True)
     log_path = os.path.join(out_dir, "log.jsonl")
 
-    # Load split reaction IDs
+    # Load split compound keys
     with open(splits_json) as f:
         splits = json.load(f)
-    train_rxn_ids = set(splits["train_id"])
-    val_rxn_ids   = set(splits["val_id"])
+    train_keys = set(splits["train_id"])
+    val_keys   = set(splits["val_id"])
 
-    # Build datasets — filter by split reaction IDs
-    print(f"[train] Building index for train split...")
-    train_ds = Transition1xDataset(h5_path, splits=["train", "data"])
-    val_ds   = Transition1xDataset(h5_path, splits=["val"])
+    # Sanity check: splits must use compound keys
+    def _looks_like_compound_key(s: str) -> bool:
+        return "::" in s
 
-    # Filter to only reactions in our splits
-    def filter_by_rxn(ds, rxn_ids):
-        return [i for i, entry in enumerate(ds._index) if entry[2] in rxn_ids]
+    sample_train = next(iter(train_keys), None)
+    if sample_train is not None and not _looks_like_compound_key(sample_train):
+        raise ValueError(
+            f"splits.json appears to contain bare rxn_ids, not compound keys.\n"
+            f"  Example entry: {sample_train!r}\n"
+            f"  Expected format: '<hdf5_split>::<formula>::<rxn_id>'\n"
+            f"  Regenerate splits with: python -m ralrc.split --h5 ... --out splits.json"
+        )
 
-    train_indices = filter_by_rxn(train_ds, train_rxn_ids)
-    val_indices   = filter_by_rxn(val_ds,   val_rxn_ids)
+    # Build dataset over ALL HDF5 splits so every compound key is visible
+    print("[train] Building index (all HDF5 splits)...")
+    full_ds = Transition1xDataset(h5_path, splits=None)
+    print(f"[train] Index size: {len(full_ds)} frames")
+
+    def filter_by_compound_key(ds, key_set):
+        return [i for i, entry in enumerate(ds._index)
+                if _compound_key(entry) in key_set]
+
+    train_indices = filter_by_compound_key(full_ds, train_keys)
+    val_indices   = filter_by_compound_key(full_ds, val_keys)
+
+    if len(train_indices) == 0:
+        raise RuntimeError(
+            f"[train] FATAL: 0 train frames matched. "
+            f"Check that splits.json was generated with the current HDF5."
+        )
+    if len(val_indices) == 0:
+        raise RuntimeError(
+            f"[train] FATAL: 0 val frames matched. Same issue."
+        )
 
     if max_train_reactions is not None:
-        # Limit to frames from the first N reactions
         seen_rxns: set = set()
         limited = []
         for i in train_indices:
-            rxn = train_ds._index[i][2]
-            seen_rxns.add(rxn)
+            rxn_key = _compound_key(full_ds._index[i])
+            seen_rxns.add(rxn_key)
             limited.append(i)
             if len(seen_rxns) >= max_train_reactions:
                 break
@@ -163,7 +190,6 @@ def train(
     ).to(device)
     atom_ref = AtomRefEnergy().to(device)
 
-    # Freeze/zero charge head if not using charges
     if not model_cfg.get("use_charge", True):
         for p in model.charge_head.parameters():
             p.requires_grad_(False)
@@ -174,8 +200,6 @@ def train(
 
     best_val_force_mae = float("inf")
     best_epoch = -1
-
-    # Shuffle train indices each epoch
     rng = np.random.default_rng(seed)
 
     for epoch in range(epochs):
@@ -188,10 +212,9 @@ def train(
         n_train = 0
 
         for idx_pos in epoch_idx:
-            sample = train_ds[train_indices[idx_pos]]
+            sample = full_ds[train_indices[idx_pos]]
             Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
 
-            # Forward pass with force computation
             R.requires_grad_(True)
             out = model.forward(Z, R, Q, S, compute_forces=True)
             E_ref_corr = E_ref - atom_ref(Z)
@@ -217,15 +240,8 @@ def train(
         val_f_mae = 0.0
         n_val = 0
 
-        with torch.no_grad():
-            for i in val_indices:
-                sample = val_ds[i]
-                Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
-                # Forces via autograd even in no_grad context requires re-enabling grad
-
-            # Re-run with grad enabled for force computation
         for i in val_indices:
-            sample = val_ds[i]
+            sample = full_ds[i]
             Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
             with torch.enable_grad():
                 out = model.forward(Z, R, Q, S, compute_forces=True)
@@ -252,7 +268,6 @@ def train(
                   f"train_loss={log_entry['train_loss']:.4f} | "
                   f"val_E_MAE={val_e_mae:.4f} eV | val_F_MAE={val_f_mae:.4f} eV/Å")
 
-        # Checkpoint on best val force MAE
         if val_f_mae < best_val_force_mae:
             best_val_force_mae = val_f_mae
             best_epoch = epoch
@@ -281,27 +296,22 @@ def train(
 
 def main():
     p = argparse.ArgumentParser(description="Train a RALRC ablation model.")
-    p.add_argument("--config",  required=True, help="YAML config file")
+    p.add_argument("--config",  required=True)
     p.add_argument("--seed",    type=int, default=17)
-    p.add_argument("--h5",      default=None,
-                   help="Path to Transition1x.h5 (overrides config)")
-    p.add_argument("--splits",  default=None,
-                   help="Path to splits.json (overrides config)")
+    p.add_argument("--h5",      default=None)
+    p.add_argument("--splits",  default=None)
     p.add_argument("--epochs",  type=int, default=None)
     p.add_argument("--device",  default=None)
     a = p.parse_args()
 
     cfg = yaml.safe_load(open(a.config))
-
-    h5_path    = a.h5     or cfg.get("h5_path",    "data/transition1x.h5")
+    h5_path     = a.h5     or cfg.get("h5_path",    "data/transition1x.h5")
     splits_json = a.splits or cfg.get("splits_json", "splits.json")
-    epochs     = a.epochs or cfg.get("epochs",      100)
-    device_str = a.device or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
-
+    epochs      = a.epochs or cfg.get("epochs",      100)
+    device_str  = a.device or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
     out_dir = os.path.join("runs", cfg.get("name", "model"), f"seed{a.seed}")
 
     print(f"\n=== Training {cfg.get('name','model')} | seed={a.seed} | device={device_str} ===")
-
     train(
         h5_path=h5_path,
         splits_json=splits_json,

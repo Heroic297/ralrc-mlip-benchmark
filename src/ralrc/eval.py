@@ -1,12 +1,16 @@
 """Full evaluation harness for RALRC ablation models.
 
-Metrics computed and written to benchmarks/benchmark_results.csv:
+Metrics written to benchmarks/benchmark_results.csv:
   energy_mae          eV/molecule
   force_mae           eV/Å
-  barrier_mae         eV  (max-E frame minus min-E frame per reaction)
-  ts_force_mae        eV/Å  (force MAE on TS-neighbourhood frames only)
-  ood_degradation     MAE_OOD / MAE_ID  (requires test_ood split)
+  barrier_mae         eV  (max-E minus min-E per reaction IRC)
+  ts_force_mae        eV/Å  (TS-neighbourhood frames only)
+  ood_degradation     force_MAE_OOD / force_MAE_ID
   runtime_per_atom_step  ms/(atom*step)
+
+Split membership uses COMPOUND KEYS: "<hdf5_split>::<formula>::<rxn_id>"
+
+Hard-fails if n_id_frames == 0 or n_ood_frames == 0 instead of writing nan.
 
 Usage:
     python -m ralrc.eval --config configs/learned_charge_coulomb.yaml \\
@@ -33,11 +37,18 @@ from .train import AtomRefEnergy, _sample_to_tensors, HA_TO_EV
 
 
 # ---------------------------------------------------------------------------
+# Compound key helper
+# ---------------------------------------------------------------------------
+
+def _compound_key(entry: tuple) -> str:
+    return f"{entry[0]}::{entry[1]}::{entry[2]}"
+
+
+# ---------------------------------------------------------------------------
 # TS-neighbourhood detection
 # ---------------------------------------------------------------------------
 
 def _is_ts_neighbourhood(frame_idx: int, n_frames: int, window: float = 0.1) -> bool:
-    """Return True if frame is within `window` fraction of the IRC midpoint."""
     if n_frames <= 0:
         return False
     mid = (n_frames - 1) / 2.0
@@ -50,7 +61,6 @@ def _is_ts_neighbourhood(frame_idx: int, n_frames: int, window: float = 0.1) -> 
 # ---------------------------------------------------------------------------
 
 def _compute_barrier(energies_ev: list[float]) -> float:
-    """Max-minus-min energy along IRC as a proxy for barrier height."""
     if len(energies_ev) < 2:
         return float("nan")
     return max(energies_ev) - min(energies_ev)
@@ -71,32 +81,24 @@ def evaluate(
     compute_forces: bool = True,
     timing: bool = False,
 ) -> dict:
-    """
-    Evaluate model on the given index subset.
-
-    Returns dict with keys:
-        energy_mae, force_mae, barrier_mae, ts_force_mae,
-        n_frames, n_reactions, timing_ms_per_atom_step (if timing=True)
-    """
     model.eval()
     atom_ref.eval()
 
-    # Group indices by reaction to compute per-reaction barriers
+    # Group by compound key so barrier is computed per-reaction
     rxn_to_indices: dict[str, list[int]] = {}
     for i in indices:
-        rxn_id = dataset._index[i][2]
-        rxn_to_indices.setdefault(rxn_id, []).append(i)
+        ck = _compound_key(dataset._index[i])
+        rxn_to_indices.setdefault(ck, []).append(i)
 
     e_abs_errors: list[float] = []
-    f_abs_errors: list[float] = []  # mean per frame
-    ts_f_errors: list[float] = []
+    f_abs_errors: list[float] = []
+    ts_f_errors:  list[float] = []
     barrier_errors: list[float] = []
     total_atoms = 0
     total_time_s = 0.0
     n_steps = 0
 
-    for rxn_id, rxn_indices in rxn_to_indices.items():
-        # Sort by frame_idx so barrier is computed correctly
+    for ck, rxn_indices in rxn_to_indices.items():
         rxn_indices_sorted = sorted(rxn_indices, key=lambda i: dataset._index[i][3])
         n_frames_rxn = len(rxn_indices_sorted)
 
@@ -132,37 +134,32 @@ def evaluate(
                 F_pred = out["forces"].detach()
                 f_err = (F_pred - F_ref).abs().mean().item()
                 f_abs_errors.append(f_err)
-
                 if _is_ts_neighbourhood(frame_idx, n_frames_rxn, ts_window):
                     ts_f_errors.append(f_err)
 
             pred_energies.append(E_pred.item())
             ref_energies.append(E_ref_corr.item())
 
-        # Per-reaction barrier MAE
         pred_barrier = _compute_barrier(pred_energies)
         ref_barrier  = _compute_barrier(ref_energies)
         if not (np.isnan(pred_barrier) or np.isnan(ref_barrier)):
             barrier_errors.append(abs(pred_barrier - ref_barrier))
 
-    energy_mae = float(np.mean(e_abs_errors)) if e_abs_errors else float("nan")
-    force_mae  = float(np.mean(f_abs_errors)) if f_abs_errors else float("nan")
-    barrier_mae = float(np.mean(barrier_errors)) if barrier_errors else float("nan")
-    ts_force_mae = float(np.mean(ts_f_errors)) if ts_f_errors else float("nan")
+    energy_mae   = float(np.mean(e_abs_errors))  if e_abs_errors   else float("nan")
+    force_mae    = float(np.mean(f_abs_errors))  if f_abs_errors   else float("nan")
+    barrier_mae  = float(np.mean(barrier_errors)) if barrier_errors else float("nan")
+    ts_force_mae = float(np.mean(ts_f_errors))   if ts_f_errors    else float("nan")
 
     result = {
-        "energy_mae": energy_mae,
-        "force_mae":  force_mae,
+        "energy_mae":  energy_mae,
+        "force_mae":   force_mae,
         "barrier_mae": barrier_mae,
         "ts_force_mae": ts_force_mae,
-        "n_frames": len(indices),
+        "n_frames":    len(indices),
         "n_reactions": len(rxn_to_indices),
     }
-
     if timing and n_steps > 0:
-        ms_per_atom_step = 1000.0 * total_time_s / max(total_atoms, 1)
-        result["runtime_per_atom_step_ms"] = ms_per_atom_step
-
+        result["runtime_per_atom_step_ms"] = 1000.0 * total_time_s / max(total_atoms, 1)
     return result
 
 
@@ -177,8 +174,7 @@ def main():
     p.add_argument("--h5",         default=None)
     p.add_argument("--splits",     default=None)
     p.add_argument("--out",        default="benchmarks/benchmark_results.csv")
-    p.add_argument("--ts-window",  type=float, default=0.1,
-                   help="Fraction of IRC frames around midpoint for TS metric")
+    p.add_argument("--ts-window",  type=float, default=0.1)
     p.add_argument("--timing",     action="store_true")
     p.add_argument("--device",     default=None)
     a = p.parse_args()
@@ -201,41 +197,65 @@ def main():
     atom_ref = AtomRefEnergy().to(device)
     atom_ref.load_state_dict(ckpt["atom_ref"])
 
-    # Load split IDs
+    # Load split compound keys
     with open(splits_json) as f:
         splits = json.load(f)
 
-    id_rxns  = set(splits.get("test_id_same_family", []))
-    ood_rxns = set(splits.get("test_ood_family", []))
-    val_rxns = set(splits.get("val_id", []))
+    id_keys  = set(splits.get("test_id_same_family", []))
+    ood_keys = set(splits.get("test_ood_family", []))
+    val_keys = set(splits.get("val_id", []))
 
-    # Build datasets
-    test_ds = Transition1xDataset(h5_path, splits=["test", "val", "data"])
+    # Validate that splits use compound keys
+    sample_key = next(iter(id_keys), None)
+    if sample_key is not None and "::" not in sample_key:
+        raise ValueError(
+            f"splits.json contains bare rxn_ids, not compound keys.\n"
+            f"  Example: {sample_key!r}\n"
+            f"  Regenerate with: python -m ralrc.split --h5 ... --out splits.json"
+        )
 
-    def idx_for(rxn_ids):
-        return [i for i, entry in enumerate(test_ds._index) if entry[2] in rxn_ids]
+    # Build single dataset over ALL HDF5 splits
+    print("[eval] Building full dataset index (all HDF5 splits)...")
+    full_ds = Transition1xDataset(h5_path, splits=None)
+    print(f"[eval] Index size: {len(full_ds)} frames")
 
-    id_indices  = idx_for(id_rxns)
-    ood_indices = idx_for(ood_rxns)
-    val_indices = idx_for(val_rxns)
+    def idx_for(key_set):
+        return [i for i, entry in enumerate(full_ds._index)
+                if _compound_key(entry) in key_set]
+
+    id_indices  = idx_for(id_keys)
+    ood_indices = idx_for(ood_keys)
+    val_indices = idx_for(val_keys)
 
     print(f"[eval] {model_name}: ID={len(id_indices)} frames, "
           f"OOD={len(ood_indices)} frames, val={len(val_indices)} frames")
 
+    # Hard-fail on empty splits
+    if len(id_indices) == 0:
+        raise RuntimeError(
+            f"[eval] FATAL: 0 ID-test frames matched from splits.json.\n"
+            f"  id_keys sample: {list(id_keys)[:3]}\n"
+            f"  Ensure splits.json was generated from this HDF5 file."
+        )
+    if len(ood_indices) == 0:
+        raise RuntimeError(
+            f"[eval] FATAL: 0 OOD frames matched from splits.json.\n"
+            f"  ood_keys sample: {list(ood_keys)[:3]}"
+        )
+
     # Evaluate
-    id_metrics  = evaluate(model, atom_ref, test_ds, id_indices,  device,
+    id_metrics  = evaluate(model, atom_ref, full_ds, id_indices,  device,
                            ts_window=a.ts_window, timing=a.timing)
-    ood_metrics = evaluate(model, atom_ref, test_ds, ood_indices, device,
+    ood_metrics = evaluate(model, atom_ref, full_ds, ood_indices, device,
                            ts_window=a.ts_window, timing=False)
 
-    # OOD degradation: ratio of force MAE OOD vs ID
     ood_deg = float("nan")
     if id_metrics["force_mae"] > 0 and not np.isnan(ood_metrics["force_mae"]):
         ood_deg = ood_metrics["force_mae"] / id_metrics["force_mae"]
 
     row = {
-        "model": model_name,
-        "checkpoint": a.checkpoint,
+        "model":                   model_name,
+        "checkpoint":              a.checkpoint,
         "energy_mae":              round(id_metrics["energy_mae"],  6),
         "force_mae":               round(id_metrics["force_mae"],   6),
         "barrier_mae":             round(id_metrics["barrier_mae"], 6),
@@ -248,7 +268,6 @@ def main():
 
     print(json.dumps(row, indent=2))
 
-    # Append to CSV
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     write_header = not Path(a.out).exists()
     with open(a.out, "a", newline="") as f:
