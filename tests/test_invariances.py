@@ -2,66 +2,19 @@
 tests/test_invariances.py
 =========================
 
-Compatibility-focused tests for the current RALRC ChargeAwarePotential.
+Invariance tests for ChargeAwarePotentialClean (the canonical model).
 
-The repo model currently appears to use:
-    model(Z, R, Q, S) -> (E, F)
-
-and computes forces inside forward() via torch.autograd.grad, so tests must NOT
-wrap model calls in torch.no_grad().
+Tests verify charge conservation, translation/rotation/permutation invariance,
+force-gradient consistency, force equivariance, and finite Coulomb energy.
+These are necessary but NOT sufficient for scientific validity — see
+reports/next_stage_plan.md for real success criteria.
 """
 
 import pytest
 import torch
 import torch.nn as nn
 
-
-try:
-    from ralrc.model import ChargeAwarePotential
-except ImportError:
-    class ChargeAwarePotential(nn.Module):
-        def __init__(self, n_species=118, hidden=64, cutoff=5.0,
-                     use_charge=True, use_coulomb=True, **kwargs):
-            super().__init__()
-            self.cutoff = cutoff
-            self.use_charge = use_charge
-            self.use_coulomb = use_coulomb
-            self.embed = nn.Embedding(n_species + 1, hidden, padding_idx=0)
-            self.q_embed = nn.Embedding(11, hidden)
-            self.s_embed = nn.Embedding(11, hidden)
-            self.energy_head = nn.Sequential(
-                nn.Linear(hidden, hidden), nn.SiLU(), nn.Linear(hidden, 1)
-            )
-            self.charge_head = nn.Sequential(
-                nn.Linear(hidden, hidden), nn.SiLU(), nn.Linear(hidden, 1)
-            )
-            self.softplus_param = nn.Parameter(torch.tensor(0.5))
-            self.ke = 14.3996
-
-        def forward(self, Z, R, Q, S):
-            R = R.clone().detach().requires_grad_(True)
-            Z = Z.long()
-            Q = Q.long()
-            S = S.long()
-
-            h = self.embed(Z) + self.q_embed(Q + 5).unsqueeze(0) + self.s_embed(S - 1).unsqueeze(0)
-            E_local = self.energy_head(h).sum()
-
-            q_raw = self.charge_head(h).squeeze(-1)
-            q = q_raw + (Q.float() - q_raw.sum()) / q_raw.numel()
-
-            diff = R.unsqueeze(1) - R.unsqueeze(0)
-            dist2 = diff.pow(2).sum(-1)
-            mask = torch.triu(torch.ones_like(dist2, dtype=torch.bool), diagonal=1)
-            r2 = dist2[mask]
-            qi = q.unsqueeze(1).expand_as(dist2)[mask]
-            qj = q.unsqueeze(0).expand_as(dist2)[mask]
-            a = torch.nn.functional.softplus(self.softplus_param)
-
-            E_coul = self.ke * (qi * qj / (r2 + a.pow(2)).sqrt()).sum()
-            E = E_local + (E_coul if self.use_coulomb else 0.0)
-            F = -torch.autograd.grad(E, R, create_graph=self.training)[0]
-            return E, F
+from ralrc.model_clean import ChargeAwarePotentialClean
 
 
 def _call_model(model, R, Z, Q, S):
@@ -121,7 +74,7 @@ def _random_rotation(seed=7):
 
 @pytest.fixture(scope="module")
 def model():
-    m = ChargeAwarePotential(use_charge=True, use_coulomb=True)
+    m = ChargeAwarePotentialClean(use_coulomb=True)
     m.eval()
     return m
 
@@ -247,7 +200,7 @@ def test_force_equivariance(model, neutral_mol):
 
 
 def test_finite_coulomb_short_range():
-    m = ChargeAwarePotential(use_charge=True, use_coulomb=True)
+    m = ChargeAwarePotentialClean(use_coulomb=True)
     m.eval()
 
     R = torch.tensor([[0.0, 0.0, 0.0],
@@ -281,7 +234,7 @@ def _synthetic_dataset(n=100, n_atoms=4, seed=0):
 
 def test_overfit_100_sanity():
     torch.manual_seed(0)
-    m = ChargeAwarePotential(hidden=64, use_charge=True, use_coulomb=True)
+    m = ChargeAwarePotentialClean(hidden=64, use_coulomb=True)
     m.train()
 
     opt = torch.optim.Adam(m.parameters(), lr=3e-3)

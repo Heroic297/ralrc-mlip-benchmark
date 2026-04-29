@@ -55,6 +55,37 @@ def _pairwise_distances(R: torch.Tensor) -> torch.Tensor:
     return rij
 
 
+def shielded_coulomb_energy(
+    q: torch.Tensor,
+    R: torch.Tensor,
+    Z: torch.Tensor,
+    shield: torch.Tensor,
+) -> torch.Tensor:
+    """
+    Shielded Coulomb energy: E = K_E * sum_{i<j} q_i*q_j / sqrt(r_ij^2 + a_ij^2 + eps)
+    where a_ij = softplus(shield[Z_i, Z_j]).
+
+    Args:
+        q      : (N,) partial charges
+        R      : (N, 3) positions — must require_grad=True for force computation
+        Z      : (N,) atomic numbers, dtype=long
+        shield : (n_elements, n_elements) per-pair shield parameter matrix
+
+    Returns a scalar energy tensor.  Differentiable wrt R, q, and shield.
+    This function is exposed at module level so tests can call it directly in
+    double precision without constructing the full model.
+    """
+    diff = R.unsqueeze(1) - R.unsqueeze(0)          # (N, N, 3)
+    r2   = diff.pow(2).sum(-1)                       # (N, N)
+    a    = F.softplus(shield[Z][:, Z])               # (N, N)
+    qq   = q.unsqueeze(0) * q.unsqueeze(1)           # (N, N)
+    mask = torch.triu(
+        torch.ones(R.shape[0], R.shape[0], device=R.device, dtype=torch.bool),
+        diagonal=1,
+    )
+    return K_E * (qq * mask / (r2 + a.pow(2) + 1e-12).sqrt()).sum()
+
+
 class ChargeAwarePotentialClean(nn.Module):
     """
     Charge-conditioned MACE-style MLIP with shielded Coulomb term.
@@ -142,24 +173,10 @@ class ChargeAwarePotentialClean(nn.Module):
         return q
 
     def _coulomb_energy(self, q: torch.Tensor, R: torch.Tensor, Z: torch.Tensor) -> torch.Tensor:
-        """
-        Shielded Coulomb: E_coul = k_e * sum_{i<j} q_i*q_j / sqrt(r_ij^2 + a_ij^2)
-        where a_ij = softplus(shield[Zi, Zj]).
-        Smooth at r -> 0.  Returns scalar 0.0 if use_coulomb is False.
-        """
+        """Delegates to module-level shielded_coulomb_energy; returns 0 if use_coulomb=False."""
         if not self.use_coulomb:
             return torch.zeros((), device=R.device, dtype=R.dtype)
-
-        diff = R.unsqueeze(1) - R.unsqueeze(0)            # (N, N, 3)
-        r2   = diff.pow(2).sum(-1)                         # (N, N)
-        a    = F.softplus(self.shield[Z][:, Z])            # (N, N)
-        qq   = q.unsqueeze(0) * q.unsqueeze(1)             # (N, N)
-        mask = torch.triu(
-            torch.ones(R.shape[0], R.shape[0], device=R.device, dtype=torch.bool),
-            diagonal=1,
-        )
-        E_coul = K_E * (qq * mask / (r2 + a.pow(2) + 1e-12).sqrt()).sum()
-        return E_coul
+        return shielded_coulomb_energy(q, R, Z, self.shield)
 
     # ------------------------------------------------------------------
     # Public API

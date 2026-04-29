@@ -1,37 +1,36 @@
-﻿"""ChargeAwarePotential: charge-conditioned MACE-style MLIP with shielded Coulomb."""
-import torch
-import torch.nn as nn
+"""DEPRECATED: ralrc.model — import from ralrc.model_clean instead.
 
-K_E = 14.3996  # eV * angstrom / e^2
+Original model.py used torch.cdist which lacks a registered _cdist_backward
+kernel on several CUDA builds (torch 2.11+cu128 and later).  It also returned
+a (E, F) tuple rather than the dict API used by train.py and eval.py.
 
-class ChargeAwarePotential(nn.Module):
-    def __init__(self, hidden=64, use_charge=True, use_coulomb=True, n_elements=119):
-        super().__init__()
-        self.use_charge = use_charge
-        self.use_coulomb = use_coulomb
-        self.embed = nn.Embedding(n_elements, hidden)
-        self.q_embed = nn.Embedding(11, hidden)
-        self.s_embed = nn.Embedding(11, hidden)
-        self.energy_head = nn.Sequential(nn.Linear(hidden, hidden), nn.SiLU(), nn.Linear(hidden, 1))
-        self.charge_head = nn.Sequential(nn.Linear(hidden, hidden), nn.SiLU(), nn.Linear(hidden, 1))
-        self.shield = nn.Parameter(torch.zeros(n_elements, n_elements))
+This module re-exports ChargeAwarePotentialClean under the legacy
+ChargeAwarePotential name so that any remaining import sites keep working.
+The thin subclass accepts (and ignores) the legacy use_charge kwarg.
 
-    def forward(self, Z, R, Q, S):
-        R = R.requires_grad_(True)
-        h = self.embed(Z) + self.q_embed(Q + 5).unsqueeze(0) + self.s_embed(S - 1).unsqueeze(0)
-        rij = torch.cdist(R, R) + torch.eye(R.shape[0], device=R.device) * 1e6
-        pair = torch.exp(-rij / 2.0)
-        h = h + (pair @ h)
-        E_local = self.energy_head(h).sum()
-        E_total = E_local
-        if self.use_charge:
-            q_raw = self.charge_head(h).squeeze(-1)
-            q = q_raw + (Q.float() - q_raw.sum()) / Z.shape[0]
-            if self.use_coulomb:
-                a = torch.nn.functional.softplus(self.shield[Z][:, Z])
-                qq = q.unsqueeze(0) * q.unsqueeze(1)
-                mask = torch.triu(torch.ones_like(rij), diagonal=1)
-                E_coul = K_E * (qq * mask / torch.sqrt(rij**2 + a**2)).sum()
-                E_total = E_total + E_coul
-        F = -torch.autograd.grad(E_total, R, create_graph=self.training)[0]
-        return E_total, F
+Do not add new code here.
+"""
+import warnings
+
+from .model_clean import ChargeAwarePotentialClean
+
+warnings.warn(
+    "ralrc.model is deprecated; import ChargeAwarePotentialClean from "
+    "ralrc.model_clean instead.  This shim will be removed in a future version.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+
+class ChargeAwarePotential(ChargeAwarePotentialClean):
+    """Legacy alias.  use_charge kwarg is accepted but ignored (use_coulomb controls both)."""
+
+    def __init__(
+        self,
+        hidden: int = 64,
+        n_elements: int = 119,
+        use_charge: bool = True,
+        use_coulomb: bool = True,
+        **kwargs,
+    ):
+        super().__init__(hidden=hidden, n_elements=n_elements, use_coulomb=use_coulomb)

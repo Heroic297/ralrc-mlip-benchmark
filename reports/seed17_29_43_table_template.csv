@@ -1,0 +1,13 @@
+seed,ablation,train_frames,val_frames,test_id_frames,test_ood_frames,energy_mae_id,force_mae_id,ts_force_mae_id,barrier_mae_id,energy_mae_ood,force_mae_ood,ts_force_mae_ood,barrier_mae_ood,ood_degradation_force,ood_degradation_barrier,runtime_train_sec,runtime_eval_sec,runtime_ratio_vs_local,status,notes
+17,local_mace_style,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+17,charge_head_no_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+17,fixed_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+17,learned_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+29,local_mace_style,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+29,charge_head_no_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+29,fixed_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+29,learned_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+43,local_mace_style,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+43,charge_head_no_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+43,fixed_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
+43,learned_charge_coulomb,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,not_run,
