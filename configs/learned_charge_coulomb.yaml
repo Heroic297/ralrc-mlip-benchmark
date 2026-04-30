@@ -8,9 +8,11 @@ w_E: 1.0
 w_F: 100.0
 h5_path: data/transition1x.h5
 splits_json: splits.json
+batch_size: 32
+num_workers: 4
 # Stabilization: near-zero charge-head final-layer init prevents Coulomb explosion at step 0
 charge_init_scale: 1.0e-3
-# lambda_coul_warmup_epochs ramps Coulomb scale 0→1 linearly over N epochs.
+# lambda_coul_warmup_epochs ramps Coulomb scale 0->1 linearly over N epochs.
 # This suppresses the Coulomb Hessian gradient that drives charges from ~0 to O(1) in epoch 0.
 # Set to ~13% of total epochs (20/150). Preflight sees lambda=0 (ep0) and 0.05 (ep1).
 lambda_coul_warmup_epochs: 20

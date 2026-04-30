@@ -8,3 +8,5 @@ w_E: 1.0
 w_F: 100.0
 h5_path: data/transition1x.h5
 splits_json: splits.json
+batch_size: 32
+num_workers: 4

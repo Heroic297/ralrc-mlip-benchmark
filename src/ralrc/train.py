@@ -7,6 +7,12 @@ Split membership uses COMPOUND KEYS: "<hdf5_split>::<formula>::<rxn_id>"
 so there are no false matches from bare rxn_id collisions across formulas
 or HDF5 splits.
 
+Batching strategy: molecules have variable atom counts so tensors cannot be
+stacked. We use gradient accumulation over a list-collated mini-batch, which
+keeps the model calls per-molecule while letting DataLoader workers prefetch
+HDF5 frames asynchronously. This overlaps I/O with GPU compute and is the
+primary speedup lever on a single GPU with fast storage.
+
 Usage:
     python -m ralrc.train --config configs/learned_charge_coulomb.yaml --seed 17
 """
@@ -24,6 +30,7 @@ from typing import Optional
 import numpy as np
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader, Subset
 import yaml
 
 from .model_clean import ChargeAwarePotentialClean
@@ -50,6 +57,16 @@ def _sample_to_tensors(sample: dict, device: torch.device):
     E = torch.tensor(sample["energy"] * HA_TO_EV, dtype=torch.float32, device=device)
     F = torch.tensor(sample["forces"] * HA_TO_EV, dtype=torch.float32, device=device)
     return Z, R, Q, S, E, F
+
+
+def _collate_variable_mols(batch):
+    """Return list of sample dicts unchanged.
+
+    Molecules have variable atom counts so stacking is not possible without
+    padding. Gradient accumulation over this list achieves the same effect as
+    a true batch while keeping per-molecule model calls intact.
+    """
+    return batch
 
 
 # ---------------------------------------------------------------------------
@@ -118,6 +135,8 @@ def train(
     lr: float = 1e-3,
     w_E: float = 1.0,
     w_F: float = 100.0,
+    batch_size: int = 32,
+    num_workers: int = 4,
     max_train_reactions: Optional[int] = None,
     lambda_coul_warmup_epochs: int = 0,
     device_str: str = "cuda" if torch.cuda.is_available() else "cpu",
@@ -183,6 +202,31 @@ def train(
         train_indices = limited
 
     print(f"[train] Train frames: {len(train_indices)}, Val frames: {len(val_indices)}")
+    print(f"[train] DataLoader: batch_size={batch_size}, num_workers={num_workers}")
+
+    # Build DataLoaders once — shuffle=True reshuffles automatically each epoch.
+    # list collation handles variable atom counts without padding.
+    _use_workers = num_workers > 0
+    train_loader = DataLoader(
+        Subset(full_ds, train_indices),
+        batch_size=batch_size,
+        shuffle=True,
+        collate_fn=_collate_variable_mols,
+        num_workers=num_workers,
+        prefetch_factor=2 if _use_workers else None,
+        persistent_workers=_use_workers,
+        pin_memory=False,  # list-of-dicts cannot be pinned
+    )
+    val_loader = DataLoader(
+        Subset(full_ds, val_indices),
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=_collate_variable_mols,
+        num_workers=num_workers,
+        prefetch_factor=2 if _use_workers else None,
+        persistent_workers=_use_workers,
+        pin_memory=False,
+    )
 
     # Model
     charge_init_scale = model_cfg.get("charge_init_scale", None)
@@ -203,7 +247,6 @@ def train(
 
     best_val_force_mae = float("inf")
     best_epoch = -1
-    rng = np.random.default_rng(seed)
 
     for epoch in range(epochs):
         cur_lr = cosine_lr(optimizer, epoch, epochs, lr)
@@ -211,53 +254,63 @@ def train(
         # Lambda_coul warmup: ramp Coulomb scale from 0 → 1 over warmup_epochs
         if lambda_coul_warmup_epochs > 0 and hasattr(model, "lambda_coul"):
             model.lambda_coul = float(min(epoch / lambda_coul_warmup_epochs, 1.0))
-        # (if no warmup, model.lambda_coul stays at 1.0 set in __init__)
 
+        # ------------------------------------------------------------------
+        # Training
+        # ------------------------------------------------------------------
         model.train()
         atom_ref.train()
-
-        epoch_idx = rng.permutation(len(train_indices)).tolist()
         train_loss_sum = 0.0
         n_train = 0
 
-        for idx_pos in epoch_idx:
-            sample = full_ds[train_indices[idx_pos]]
-            Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
-
-            R.requires_grad_(True)
-            out = model.forward(Z, R, Q, S, compute_forces=True)
-            E_ref_corr = E_ref - atom_ref(Z)
-
-            loss = energy_force_loss(
-                out["energy"], out["forces"],
-                E_ref_corr, F_ref,
-                w_E=w_E, w_F=w_F,
-            )
-
+        for batch in train_loader:
+            # Gradient accumulation over the variable-size mini-batch.
+            # Grads are accumulated across all molecules before the optimizer
+            # step, matching the semantics of a true batched forward pass.
             optimizer.zero_grad()
-            loss.backward()
+            batch_loss = 0.0
+            n_mol = len(batch)
+
+            for sample in batch:
+                Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
+                R.requires_grad_(True)
+                out = model.forward(Z, R, Q, S, compute_forces=True)
+                E_ref_corr = E_ref - atom_ref(Z)
+
+                # Normalize loss by batch size so effective LR is independent
+                # of batch_size (equivalent to mean reduction across the batch).
+                loss = energy_force_loss(
+                    out["energy"], out["forces"],
+                    E_ref_corr, F_ref,
+                    w_E=w_E, w_F=w_F,
+                ) / n_mol
+                loss.backward()
+                batch_loss += loss.item() * n_mol  # track un-normalized for logging
+
             nn.utils.clip_grad_norm_(params, max_norm=10.0)
             optimizer.step()
 
-            train_loss_sum += loss.item()
-            n_train += 1
+            train_loss_sum += batch_loss
+            n_train += n_mol
 
+        # ------------------------------------------------------------------
         # Validation
+        # ------------------------------------------------------------------
         model.eval()
         atom_ref.eval()
         val_e_mae = 0.0
         val_f_mae = 0.0
         n_val = 0
 
-        for i in val_indices:
-            sample = full_ds[i]
-            Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
-            with torch.enable_grad():
-                out = model.forward(Z, R, Q, S, compute_forces=True)
-            E_ref_corr = E_ref - atom_ref(Z).detach()
-            val_e_mae += (out["energy"].detach() - E_ref_corr).abs().item()
-            val_f_mae += (out["forces"].detach() - F_ref).abs().mean().item()
-            n_val += 1
+        for batch in val_loader:
+            for sample in batch:
+                Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
+                with torch.enable_grad():
+                    out = model.forward(Z, R, Q, S, compute_forces=True)
+                E_ref_corr = E_ref - atom_ref(Z).detach()
+                val_e_mae += (out["energy"].detach() - E_ref_corr).abs().item()
+                val_f_mae += (out["forces"].detach() - F_ref).abs().mean().item()
+                n_val += 1
 
         val_e_mae /= max(n_val, 1)
         val_f_mae /= max(n_val, 1)
@@ -294,6 +347,8 @@ def train(
         "n_train_frames": n_train,
         "n_val_frames": n_val,
         "seed": seed,
+        "batch_size": batch_size,
+        "num_workers": num_workers,
     }
     with open(os.path.join(out_dir, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2)
@@ -306,19 +361,23 @@ def train(
 
 def main():
     p = argparse.ArgumentParser(description="Train a RALRC ablation model.")
-    p.add_argument("--config",  required=True)
-    p.add_argument("--seed",    type=int, default=17)
-    p.add_argument("--h5",      default=None)
-    p.add_argument("--splits",  default=None)
-    p.add_argument("--epochs",  type=int, default=None)
-    p.add_argument("--device",  default=None)
+    p.add_argument("--config",       required=True)
+    p.add_argument("--seed",         type=int, default=17)
+    p.add_argument("--h5",           default=None)
+    p.add_argument("--splits",       default=None)
+    p.add_argument("--epochs",       type=int, default=None)
+    p.add_argument("--device",       default=None)
+    p.add_argument("--batch-size",   type=int, default=None, dest="batch_size")
+    p.add_argument("--num-workers",  type=int, default=None, dest="num_workers")
     a = p.parse_args()
 
     cfg = yaml.safe_load(open(a.config))
-    h5_path     = a.h5     or cfg.get("h5_path",    "data/transition1x.h5")
-    splits_json = a.splits or cfg.get("splits_json", "splits.json")
-    epochs      = a.epochs or cfg.get("epochs",      100)
-    device_str  = a.device or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
+    h5_path     = a.h5          or cfg.get("h5_path",    "data/transition1x.h5")
+    splits_json = a.splits      or cfg.get("splits_json", "splits.json")
+    epochs      = a.epochs      or cfg.get("epochs",      100)
+    device_str  = a.device      or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
+    batch_size  = a.batch_size  or cfg.get("batch_size",  32)
+    num_workers = a.num_workers if a.num_workers is not None else cfg.get("num_workers", 4)
     out_dir = os.path.join("runs", cfg.get("name", "model"), f"seed{a.seed}")
 
     print(f"\n=== Training {cfg.get('name','model')} | seed={a.seed} | device={device_str} ===")
@@ -332,6 +391,8 @@ def main():
         lr=cfg.get("lr", 1e-3),
         w_E=cfg.get("w_E", 1.0),
         w_F=cfg.get("w_F", 100.0),
+        batch_size=batch_size,
+        num_workers=num_workers,
         max_train_reactions=cfg.get("max_train_reactions", None),
         lambda_coul_warmup_epochs=cfg.get("lambda_coul_warmup_epochs", 0),
         device_str=device_str,
