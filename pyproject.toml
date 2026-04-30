@@ -26,9 +26,17 @@ chem = [
     "h5py>=3.9",
     "networkx>=3.1",
 ]
+# NOTE: [mace] extra is NOT required for the training pipeline.
+# ChargeAwarePotentialClean (model_clean.py) is a standalone implementation
+# that does not import mace-torch or e3nn.
+#
+# mace-torch (all versions >=0.3) hard-pins e3nn==0.4.4.
+# e3nn and mace-torch also have no cp314 wheels as of April 2026.
+# Only install this extra if you need the upstream MACE architecture
+# for comparison, and only on Python <=3.12 with a separate venv.
 mace = [
-    "mace-torch>=0.3",
-    "e3nn>=0.5",
+    "mace-torch==0.3.3",
+    "e3nn==0.4.4",
 ]
 dev = [
     "pytest>=7.4",
@@ -39,9 +47,9 @@ dev = [
 
 [project.scripts]
 ralrc-train = "ralrc.train:main"
-ralrc-eval = "ralrc.eval:main"
+ralrc-eval  = "ralrc.eval:main"
 ralrc-split = "ralrc.split:main"
-ralrc-md = "ralrc.md_stability:main"
+ralrc-md    = "ralrc.md_stability:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
