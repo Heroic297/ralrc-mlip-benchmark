@@ -53,8 +53,10 @@ def _sample_to_tensors(sample: dict, device: torch.device):
     R = torch.tensor(sample["pos"],    dtype=torch.float32, device=device)
     Q = torch.zeros((),                dtype=torch.long,    device=device)
     S = torch.ones((),                 dtype=torch.long,    device=device)
-    E = torch.tensor(sample["energy"] * HA_TO_EV, dtype=torch.float32, device=device)
-    F = torch.tensor(sample["forces"] * HA_TO_EV, dtype=torch.float32, device=device)
+    # Transition1x stores energies in eV and forces in eV/Å — no unit conversion needed.
+    # (HA_TO_EV was incorrectly applied here; removed in this commit.)
+    E = torch.tensor(sample["energy"], dtype=torch.float32, device=device)
+    F = torch.tensor(sample["forces"], dtype=torch.float32, device=device)
     return Z, R, Q, S, E, F
 
 
@@ -120,6 +122,7 @@ def train(
     splits_json: str,
     model_cfg: dict,
     out_dir: str,
+    atom_refs_json: str = None,
     seed: int = 17,
     epochs: int = 100,
     lr: float = 1e-3,
@@ -217,6 +220,20 @@ def train(
         charge_init_scale=model_cfg.get("charge_init_scale", None),
     ).to(device)
     atom_ref = AtomRefEnergy().to(device)
+
+    # Load pre-fitted atom reference energies if provided
+    if atom_refs_json is not None and os.path.isfile(atom_refs_json):
+        with open(atom_refs_json) as f:
+            e_ref_data = json.load(f)
+        # e_ref.json maps element symbol -> eV; load into embedding
+        # Atomic numbers: H=1, C=6, N=7, O=8
+        _symbol_to_z = {"H": 1, "C": 6, "N": 7, "O": 8}
+        with torch.no_grad():
+            for sym, e_val in e_ref_data.items():
+                z = _symbol_to_z.get(sym)
+                if z is not None:
+                    atom_ref.ref.weight[z] = torch.tensor(float(e_val))
+        print(f"[train] Loaded atom refs from {atom_refs_json}")
 
     if not model_cfg.get("use_charge", True):
         for p in model.charge_head.parameters():
@@ -399,6 +416,7 @@ def main():
     p.add_argument("--seed",        type=int, default=17)
     p.add_argument("--h5",          default=None)
     p.add_argument("--splits",      default=None)
+    p.add_argument("--atom-refs",   default=None, dest="atom_refs")
     p.add_argument("--epochs",      type=int, default=None)
     p.add_argument("--device",      default=None)
     p.add_argument("--batch-size",  type=int, default=None, dest="batch_size")
@@ -408,6 +426,7 @@ def main():
     cfg         = yaml.safe_load(open(a.config))
     h5_path     = a.h5         or cfg.get("h5_path",    "data/transition1x.h5")
     splits_json = a.splits     or cfg.get("splits_json", "splits.json")
+    atom_refs   = a.atom_refs  or cfg.get("atom_refs",   None)
     epochs      = a.epochs     or cfg.get("epochs",      100)
     device_str  = a.device     or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
     batch_size  = a.batch_size or cfg.get("batch_size",  32)
@@ -419,6 +438,7 @@ def main():
         splits_json=splits_json,
         model_cfg=cfg,
         out_dir=out_dir,
+        atom_refs_json=atom_refs,
         seed=a.seed,
         epochs=epochs,
         lr=cfg.get("lr", 1e-3),
