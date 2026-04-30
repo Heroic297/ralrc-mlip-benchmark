@@ -39,9 +39,13 @@ from .transition1x import Transition1xDataset
 
 
 # ---------------------------------------------------------------------------
-# Unit conversion
+# Unit convention
 # ---------------------------------------------------------------------------
-HA_TO_EV = 27.2114
+# Transition1x stores energies in eV and forces in eV/Å (Schreiner et al.
+# 2022, Scientific Data). Verified empirically: raw E for C2H2N2O2 ≈ -9176,
+# matching sum of per-atom ωB97X/6-31G(d) energies (-9132 eV); ratio 1.005.
+# HA_TO_EV is retained as a no-op constant for backward import compatibility.
+HA_TO_EV = 1.0
 
 
 # ---------------------------------------------------------------------------
@@ -53,8 +57,8 @@ def _sample_to_tensors(sample: dict, device: torch.device):
     R = torch.tensor(sample["pos"],    dtype=torch.float32, device=device)
     Q = torch.zeros((),                dtype=torch.long,    device=device)
     S = torch.ones((),                 dtype=torch.long,    device=device)
-    E = torch.tensor(sample["energy"] * HA_TO_EV, dtype=torch.float32, device=device)
-    F = torch.tensor(sample["forces"] * HA_TO_EV, dtype=torch.float32, device=device)
+    E = torch.tensor(sample["energy"], dtype=torch.float32, device=device)
+    F = torch.tensor(sample["forces"], dtype=torch.float32, device=device)
     return Z, R, Q, S, E, F
 
 
@@ -130,6 +134,10 @@ def train(
     max_train_reactions: Optional[int] = None,
     lambda_coul_warmup_epochs: int = 0,
     device_str: str = "cuda" if torch.cuda.is_available() else "cpu",
+    atom_refs_path: Optional[str] = None,
+    smoke_test: bool = False,
+    smoke_train_frames: int = 2000,
+    smoke_val_frames: int = 500,
 ):
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -153,8 +161,17 @@ def train(
             f"  Regenerate: python -m ralrc.split --h5 ... --out splits.json"
         )
 
+    atom_refs = None
+    if atom_refs_path is not None:
+        with open(atom_refs_path) as f:
+            atom_refs = {int(k): float(v) for k, v in json.load(f).items()}
+        print(f"[train] Loaded {len(atom_refs)} atomic refs from {atom_refs_path}")
+    else:
+        print("[train] WARNING: no --atom-refs supplied; targets will be raw "
+              "DFT total energies. Training will fail to converge on E_MAE.")
+
     print("[train] Building index (all HDF5 splits)...")
-    full_ds = Transition1xDataset(h5_path, splits=None)
+    full_ds = Transition1xDataset(h5_path, splits=None, atom_refs=atom_refs)
     print(f"[train] Index size: {len(full_ds):,} frames")
 
     def filter_keys(ds, key_set):
@@ -178,6 +195,11 @@ def train(
             if len(seen) >= max_train_reactions:
                 break
         train_indices = limited
+
+    if smoke_test:
+        rng = random.Random(seed)
+        train_indices = rng.sample(train_indices, min(smoke_train_frames, len(train_indices)))
+        val_indices   = rng.sample(val_indices,   min(smoke_val_frames,   len(val_indices)))
 
     n_train_frames = len(train_indices)
     n_val_frames   = len(val_indices)
@@ -216,14 +238,13 @@ def train(
         use_coulomb=model_cfg.get("use_coulomb", True),
         charge_init_scale=model_cfg.get("charge_init_scale", None),
     ).to(device)
-    atom_ref = AtomRefEnergy().to(device)
 
     if not model_cfg.get("use_charge", True):
         for p in model.charge_head.parameters():
             p.requires_grad_(False)
         model.shield.requires_grad_(False)
 
-    params = list(model.parameters()) + list(atom_ref.parameters())
+    params = list(model.parameters())
     optimizer = torch.optim.Adam(params, lr=lr)
 
     best_val_force_mae = float("inf")
@@ -248,7 +269,6 @@ def train(
         # Training pass with per-batch tqdm bar
         # ------------------------------------------------------------------
         model.train()
-        atom_ref.train()
         train_loss_sum = 0.0
         n_train = 0
         epoch_start = time.perf_counter()
@@ -280,10 +300,10 @@ def train(
                     Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
                     R.requires_grad_(True)
                     out = model.forward(Z, R, Q, S, compute_forces=True)
-                    E_ref_corr = E_ref - atom_ref(Z)
+                    n_atoms = max(Z.shape[0], 1)
                     loss = energy_force_loss(
-                        out["energy"], out["forces"],
-                        E_ref_corr, F_ref,
+                        out["energy"] / n_atoms, out["forces"],
+                        E_ref / n_atoms, F_ref,
                         w_E=w_E, w_F=w_F,
                     ) / n_mol
                     loss.backward()
@@ -309,7 +329,6 @@ def train(
         # Validation pass (no progress bar, fast)
         # ------------------------------------------------------------------
         model.eval()
-        atom_ref.eval()
         val_e_mae = 0.0
         val_f_mae = 0.0
         n_val = 0
@@ -319,8 +338,8 @@ def train(
                 Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
                 with torch.enable_grad():
                     out = model.forward(Z, R, Q, S, compute_forces=True)
-                E_ref_corr = E_ref - atom_ref(Z).detach()
-                val_e_mae += (out["energy"].detach() - E_ref_corr).abs().item()
+                n_atoms = max(Z.shape[0], 1)
+                val_e_mae += (out["energy"].detach() - E_ref).abs().item() / n_atoms
                 val_f_mae += (out["forces"].detach() - F_ref).abs().mean().item()
                 n_val += 1
 
@@ -340,7 +359,8 @@ def train(
             best_epoch = epoch
             ckpt_flag = "  [*] saved best"
             torch.save(
-                {"model": model.state_dict(), "atom_ref": atom_ref.state_dict(),
+                {"model": model.state_dict(),
+                 "atom_refs": atom_refs,
                  "epoch": epoch, "val_force_mae": val_f_mae, "cfg": model_cfg},
                 os.path.join(out_dir, "best.pt"),
             )
@@ -349,7 +369,7 @@ def train(
         print(
             f"  Ep {epoch+1:>3}/{epochs} "
             f"| loss={train_loss_sum/max(n_train,1):.4f} "
-            f"| E_MAE={val_e_mae:.4f}eV "
+            f"| E_MAE={val_e_mae:.4f}eV/atom "
             f"| F_MAE={val_f_mae:.4f}eV/A "
             f"| {_fmt_seconds(epoch_wall)}/ep "
             f"| elapsed={elapsed_str} "
@@ -362,7 +382,7 @@ def train(
             "lr": cur_lr,
             "lambda_coul": getattr(model, "lambda_coul", 1.0),
             "train_loss": train_loss_sum / max(n_train, 1),
-            "val_energy_mae_eV": val_e_mae,
+            "val_energy_mae_eV_per_atom": val_e_mae,
             "val_force_mae_eV_ang": val_f_mae,
             "epoch_wall_s": epoch_wall,
         }
@@ -386,6 +406,21 @@ def train(
     }
     with open(os.path.join(out_dir, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2)
+
+    if smoke_test:
+        # Thresholds detect "AtomRef fix is working" after 1 epoch on 2k frames.
+        # Pre-fix 10-epoch baseline plateaued at E_MAE~10^4 eV, F_MAE~7-9 eV/Å.
+        e_thresh = 5.0   # eV/atom — 3+ orders of magnitude below pre-fix
+        f_thresh = 5.0   # eV/Å    — meaningfully below pre-fix plateau
+        ok = (val_e_mae < e_thresh) and (val_f_mae < f_thresh)
+        msg = (f"[smoke-test] E_MAE={val_e_mae:.4f} eV/atom (<{e_thresh}?) "
+               f"F_MAE={val_f_mae:.4f} eV/Å (<{f_thresh}?) ")
+        if ok:
+            print(msg + "PASS")
+        else:
+            print(msg + "FAIL — atom-ref subtraction or loss plumbing is wrong")
+            raise SystemExit(2)
+
     return summary
 
 
@@ -403,6 +438,10 @@ def main():
     p.add_argument("--device",      default=None)
     p.add_argument("--batch-size",  type=int, default=None, dest="batch_size")
     p.add_argument("--num-workers", type=int, default=None, dest="num_workers")
+    p.add_argument("--atom-refs",   default=None, dest="atom_refs",
+                   help="Path to JSON of per-element reference energies (eV).")
+    p.add_argument("--smoke-test",  action="store_true", dest="smoke_test",
+                   help="2k train / 500 val / 1 epoch / bs=64; assert E<5 F<3.")
     a = p.parse_args()
 
     cfg         = yaml.safe_load(open(a.config))
@@ -412,7 +451,13 @@ def main():
     device_str  = a.device     or cfg.get("device",      "cuda" if torch.cuda.is_available() else "cpu")
     batch_size  = a.batch_size or cfg.get("batch_size",  32)
     num_workers = a.num_workers if a.num_workers is not None else cfg.get("num_workers", 0)
-    out_dir     = os.path.join("runs", cfg.get("name", "model"), f"seed{a.seed}")
+    atom_refs   = a.atom_refs  or cfg.get("atom_refs", None)
+    if a.smoke_test:
+        epochs = 1
+        batch_size = 64
+        out_dir = os.path.join("runs", cfg.get("name", "model"), f"seed{a.seed}_smoke")
+    else:
+        out_dir = os.path.join("runs", cfg.get("name", "model"), f"seed{a.seed}")
 
     train(
         h5_path=h5_path,
@@ -429,6 +474,8 @@ def main():
         max_train_reactions=cfg.get("max_train_reactions", None),
         lambda_coul_warmup_epochs=cfg.get("lambda_coul_warmup_epochs", 0),
         device_str=device_str,
+        atom_refs_path=atom_refs,
+        smoke_test=a.smoke_test,
     )
 
 

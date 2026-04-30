@@ -33,7 +33,7 @@ import yaml
 
 from .model_clean import ChargeAwarePotentialClean
 from .transition1x import Transition1xDataset
-from .train import AtomRefEnergy, _sample_to_tensors, HA_TO_EV
+from .train import _sample_to_tensors, HA_TO_EV
 
 
 # ---------------------------------------------------------------------------
@@ -73,7 +73,6 @@ def _compute_barrier(energies_ev: list[float]) -> float:
 @torch.no_grad()
 def evaluate(
     model: ChargeAwarePotentialClean,
-    atom_ref: AtomRefEnergy,
     dataset: Transition1xDataset,
     indices: list[int],
     device: torch.device,
@@ -82,7 +81,6 @@ def evaluate(
     timing: bool = False,
 ) -> dict:
     model.eval()
-    atom_ref.eval()
 
     # Group by compound key so barrier is computed per-reaction
     rxn_to_indices: dict[str, list[int]] = {}
@@ -110,7 +108,9 @@ def evaluate(
             frame_idx = dataset._index[i][3]
 
             Z, R, Q, S, E_ref, F_ref = _sample_to_tensors(sample, device)
-            E_ref_corr = E_ref - atom_ref(Z)
+            # Dataset already subtracted atomic refs when constructed with
+            # atom_refs=...; E_ref here is the residual target (eV).
+            E_ref_corr = E_ref
 
             t0 = time.perf_counter() if timing else None
 
@@ -194,8 +194,10 @@ def main():
         use_coulomb=cfg.get("use_coulomb", True),
     ).to(device)
     model.load_state_dict(ckpt["model"])
-    atom_ref = AtomRefEnergy().to(device)
-    atom_ref.load_state_dict(ckpt["atom_ref"])
+    atom_refs = ckpt.get("atom_refs", None)
+    if atom_refs is None:
+        print("[eval] WARNING: checkpoint has no atom_refs; metrics will be in "
+              "raw DFT total-energy units.")
 
     # Load split compound keys
     with open(splits_json) as f:
@@ -216,7 +218,7 @@ def main():
 
     # Build single dataset over ALL HDF5 splits
     print("[eval] Building full dataset index (all HDF5 splits)...")
-    full_ds = Transition1xDataset(h5_path, splits=None)
+    full_ds = Transition1xDataset(h5_path, splits=None, atom_refs=atom_refs)
     print(f"[eval] Index size: {len(full_ds)} frames")
 
     def idx_for(key_set):
@@ -244,9 +246,9 @@ def main():
         )
 
     # Evaluate
-    id_metrics  = evaluate(model, atom_ref, full_ds, id_indices,  device,
+    id_metrics  = evaluate(model, full_ds, id_indices,  device,
                            ts_window=a.ts_window, timing=a.timing)
-    ood_metrics = evaluate(model, atom_ref, full_ds, ood_indices, device,
+    ood_metrics = evaluate(model, full_ds, ood_indices, device,
                            ts_window=a.ts_window, timing=False)
 
     ood_deg = float("nan")
