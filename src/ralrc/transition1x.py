@@ -29,6 +29,10 @@ FORCES_KEY = "wB97x_6-31G(d).forces"
 ENDPOINTS = ("reactant", "product", "transition_state")
 REQUIRED_KEYS = {"atomic_numbers", "positions", ENERGY_KEY, FORCES_KEY}
 
+# Energy unit: Transition1x HDF5 stores energies in eV and forces in eV/Å
+# (Schreiner et al. 2022, Scientific Data). Atomic refs from
+# fit_atomic_refs.py are also in eV; subtraction is unitless.
+
 
 def _check_rxn_group(grp: h5py.Group) -> list[str]:
     """Return list of missing required keys for a reaction group."""
@@ -154,11 +158,20 @@ class Transition1xDataset:
         splits: Optional[Sequence[str]] = None,
         formulas: Optional[Sequence[str]] = None,
         include_endpoints: bool = False,
+        atom_refs: Optional[dict] = None,
     ):
         self.h5_path = Path(h5_path)
         self.splits = splits
         self.formulas = formulas
         self.include_endpoints = include_endpoints
+        # atom_refs: {Z(int): e_ref_eV(float)}. JSON files use str keys, normalize.
+        if atom_refs is None:
+            self._atom_refs_ev = None
+        else:
+            arr = np.zeros(119, dtype=np.float64)
+            for k, v in atom_refs.items():
+                arr[int(k)] = float(v)
+            self._atom_refs_ev = arr
         self._index: list[tuple] = []  # (split, formula, rxn_id, frame_idx, endpoint|None)
         self._build_index()
 
@@ -197,4 +210,10 @@ class Transition1xDataset:
                 grp = f[split][formula][rxn_id]
             else:
                 grp = f[split][formula][rxn_id][endpoint]
-            return _sample_from_group(grp, formula, rxn_id, split, frame_idx, endpoint)
+            sample = _sample_from_group(grp, formula, rxn_id, split, frame_idx, endpoint)
+        if self._atom_refs_ev is not None:
+            z = sample["z"]
+            correction_ev = float(self._atom_refs_ev[z].sum())
+            sample["energy"] = sample["energy"] - correction_ev
+            sample["atom_ref_correction_ev"] = correction_ev
+        return sample
