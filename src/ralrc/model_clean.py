@@ -117,10 +117,14 @@ class ChargeAwarePotentialClean(nn.Module):
         q_range: int = 11,
         s_range: int = 11,
         use_coulomb: bool = True,
+        charge_init_scale: float = None,
     ):
         super().__init__()
         self.use_coulomb = use_coulomb
         self.hidden = hidden
+
+        # Trainable Coulomb scale factor; set by trainer for warmup (not a nn.Parameter)
+        self.lambda_coul = 1.0
 
         self.atom_embed   = nn.Embedding(n_elements, hidden)
         self.q_embed      = nn.Embedding(q_range, hidden)   # idx = Q + 5
@@ -132,6 +136,13 @@ class ChargeAwarePotentialClean(nn.Module):
         self.charge_head  = nn.Sequential(
             nn.Linear(hidden, hidden), nn.SiLU(), nn.Linear(hidden, 1)
         )
+        # Near-zero init for charge head final layer prevents Coulomb divergence at step 0.
+        # Only applied when explicitly requested (charge_init_scale is not None);
+        # default None preserves kaiming_uniform for backward compatibility.
+        if charge_init_scale is not None:
+            nn.init.normal_(self.charge_head[2].weight, 0.0, charge_init_scale)
+            nn.init.zeros_(self.charge_head[2].bias)
+
         # Per-element-pair Coulomb shield parameter (symmetric)
         self.shield = nn.Parameter(torch.zeros(n_elements, n_elements))
 
@@ -176,7 +187,7 @@ class ChargeAwarePotentialClean(nn.Module):
         """Delegates to module-level shielded_coulomb_energy; returns 0 if use_coulomb=False."""
         if not self.use_coulomb:
             return torch.zeros((), device=R.device, dtype=R.dtype)
-        return shielded_coulomb_energy(q, R, Z, self.shield)
+        return self.lambda_coul * shielded_coulomb_energy(q, R, Z, self.shield)
 
     # ------------------------------------------------------------------
     # Public API

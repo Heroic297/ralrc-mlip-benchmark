@@ -1,0 +1,6 @@
+{"epoch": 0, "lr": 0.001, "train_loss": 207472.03559946423, "val_energy_mae_eV": 104219.64338732712, "val_force_mae_eV_ang": 1117.4065918317417}
+{"epoch": 1, "lr": 0.0005005000000000001, "train_loss": 148504.849432255, "val_energy_mae_eV": 93119.0828353628, "val_force_mae_eV_ang": 1468.657986155969}
+{"epoch": 0, "lr": 0.001, "lambda_coul": 1.0, "train_loss": 205171.12858100532, "val_energy_mae_eV": 104963.12119318752, "val_force_mae_eV_ang": 1241.6487292123238}
+{"epoch": 1, "lr": 0.0005005000000000001, "lambda_coul": 1.0, "train_loss": 143703.64712177505, "val_energy_mae_eV": 94272.35556662157, "val_force_mae_eV_ang": 1394.596482402888}
+{"epoch": 0, "lr": 0.001, "lambda_coul": 0.0, "train_loss": 194536.1132623616, "val_energy_mae_eV": 100748.57485843856, "val_force_mae_eV_ang": 56.641667765733786}
+{"epoch": 1, "lr": 0.0005005000000000001, "lambda_coul": 0.05, "train_loss": 59671.462449515515, "val_energy_mae_eV": 77846.81348184757, "val_force_mae_eV_ang": 34.910240132528166}

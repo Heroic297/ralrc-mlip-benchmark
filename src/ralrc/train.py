@@ -119,6 +119,7 @@ def train(
     w_E: float = 1.0,
     w_F: float = 100.0,
     max_train_reactions: Optional[int] = None,
+    lambda_coul_warmup_epochs: int = 0,
     device_str: str = "cuda" if torch.cuda.is_available() else "cpu",
 ):
     torch.manual_seed(seed)
@@ -184,9 +185,11 @@ def train(
     print(f"[train] Train frames: {len(train_indices)}, Val frames: {len(val_indices)}")
 
     # Model
+    charge_init_scale = model_cfg.get("charge_init_scale", None)
     model = ChargeAwarePotentialClean(
         hidden=model_cfg.get("hidden", 64),
         use_coulomb=model_cfg.get("use_coulomb", True),
+        charge_init_scale=charge_init_scale,
     ).to(device)
     atom_ref = AtomRefEnergy().to(device)
 
@@ -204,6 +207,12 @@ def train(
 
     for epoch in range(epochs):
         cur_lr = cosine_lr(optimizer, epoch, epochs, lr)
+
+        # Lambda_coul warmup: ramp Coulomb scale from 0 → 1 over warmup_epochs
+        if lambda_coul_warmup_epochs > 0 and hasattr(model, "lambda_coul"):
+            model.lambda_coul = float(min(epoch / lambda_coul_warmup_epochs, 1.0))
+        # (if no warmup, model.lambda_coul stays at 1.0 set in __init__)
+
         model.train()
         atom_ref.train()
 
@@ -256,6 +265,7 @@ def train(
         log_entry = {
             "epoch": epoch,
             "lr": cur_lr,
+            "lambda_coul": getattr(model, "lambda_coul", 1.0),
             "train_loss": train_loss_sum / max(n_train, 1),
             "val_energy_mae_eV": val_e_mae,
             "val_force_mae_eV_ang": val_f_mae,
@@ -323,6 +333,7 @@ def main():
         w_E=cfg.get("w_E", 1.0),
         w_F=cfg.get("w_F", 100.0),
         max_train_reactions=cfg.get("max_train_reactions", None),
+        lambda_coul_warmup_epochs=cfg.get("lambda_coul_warmup_epochs", 0),
         device_str=device_str,
     )
 

@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local Claude Code session state
+.claude/
+
+# Large datasets — never commit the HDF5 or extracted samples
+data/
+

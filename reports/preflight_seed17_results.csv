@@ -1,0 +1,5 @@
+model,checkpoint,energy_mae,force_mae,barrier_mae,ts_force_mae,ood_degradation,runtime_per_atom_step,n_id_frames,n_ood_frames
+local_mace_style,runs/local_mace_style/seed17/best.pt,27946.373473,17.782367,59.540625,16.985772,1.5772,0.10257503479951632,1914,540
+charge_head_no_coulomb,runs/charge_head_no_coulomb/seed17/best.pt,27946.373473,17.782367,59.540625,16.985772,1.5772,0.09105867227272814,1914,540
+fixed_charge_coulomb,runs/fixed_charge_coulomb/seed17/best.pt,29921.630208,10.021963,80.4875,9.235544,1.5017,0.13241386865143598,1914,540
+learned_charge_coulomb,runs/learned_charge_coulomb/seed17/best.pt,28250.468538,224.934411,376.75625,228.563062,0.1108,0.13116653265277478,1914,540
