@@ -54,7 +54,7 @@ def _sample_to_tensors(sample: dict, device: torch.device):
     Q = torch.zeros((),                dtype=torch.long,    device=device)
     S = torch.ones((),                 dtype=torch.long,    device=device)
     # Transition1x stores energies in eV and forces in eV/Å — no unit conversion needed.
-    # (HA_TO_EV was incorrectly applied here; removed in this commit.)
+    # (HA_TO_EV was incorrectly applied here; removed in a prior commit.)
     E = torch.tensor(sample["energy"], dtype=torch.float32, device=device)
     F = torch.tensor(sample["forces"], dtype=torch.float32, device=device)
     return Z, R, Q, S, E, F
@@ -221,19 +221,21 @@ def train(
     ).to(device)
     atom_ref = AtomRefEnergy().to(device)
 
-    # Load pre-fitted atom reference energies if provided
+    # Load pre-fitted atom reference energies if provided.
+    # Uses .data[z, 0] = float(val) to write directly into the embedding's
+    # underlying storage on whatever device atom_ref lives on, bypassing
+    # autograd and avoiding the CPU/CUDA device mismatch from torch.tensor().
     if atom_refs_json is not None and os.path.isfile(atom_refs_json):
         with open(atom_refs_json) as f:
             e_ref_data = json.load(f)
-        # e_ref.json maps element symbol -> eV; load into embedding
-        # Atomic numbers: H=1, C=6, N=7, O=8
         _symbol_to_z = {"H": 1, "C": 6, "N": 7, "O": 8}
         with torch.no_grad():
             for sym, e_val in e_ref_data.items():
                 z = _symbol_to_z.get(sym)
                 if z is not None:
-                    atom_ref.ref.weight[z] = torch.tensor(float(e_val))
-        print(f"[train] Loaded atom refs from {atom_refs_json}")
+                    atom_ref.ref.weight.data[z, 0] = float(e_val)
+        print(f"[train] Loaded atom refs from {atom_refs_json}: "
+              f"{ {s: round(float(v), 2) for s, v in e_ref_data.items()} }")
 
     if not model_cfg.get("use_charge", True):
         for p in model.charge_head.parameters():
@@ -246,7 +248,6 @@ def train(
     best_val_force_mae = float("inf")
     best_epoch = -1
 
-    # Rolling window of epoch wall-times for ETA smoothing
     epoch_times: deque = deque(maxlen=5)
     run_start = time.perf_counter()
 
@@ -261,16 +262,12 @@ def train(
         if lambda_coul_warmup_epochs > 0 and hasattr(model, "lambda_coul"):
             model.lambda_coul = float(min(epoch / lambda_coul_warmup_epochs, 1.0))
 
-        # ------------------------------------------------------------------
-        # Training pass with per-batch tqdm bar
-        # ------------------------------------------------------------------
         model.train()
         atom_ref.train()
         train_loss_sum = 0.0
         n_train = 0
         epoch_start = time.perf_counter()
 
-        # Overall run ETA from rolling average of completed epochs
         if epoch_times:
             avg_epoch_s = sum(epoch_times) / len(epoch_times)
             epochs_left = epochs - epoch
@@ -285,7 +282,7 @@ def train(
             total=n_batches_per_epoch,
             unit="batch",
             dynamic_ncols=True,
-            leave=False,           # overwritten by epoch summary line
+            leave=False,
             bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]{postfix}",
         ) as pbar:
             for batch in pbar:
@@ -312,7 +309,6 @@ def train(
                 train_loss_sum += batch_loss
                 n_train += n_mol
 
-                # Update tqdm postfix: rolling train loss + run ETA
                 pbar.set_postfix({
                     "loss": f"{train_loss_sum / max(n_train, 1):.4f}",
                     "lr":   f"{cur_lr:.1e}",
@@ -322,9 +318,6 @@ def train(
         epoch_wall = time.perf_counter() - epoch_start
         epoch_times.append(epoch_wall)
 
-        # ------------------------------------------------------------------
-        # Validation pass (no progress bar, fast)
-        # ------------------------------------------------------------------
         model.eval()
         atom_ref.eval()
         val_e_mae = 0.0
@@ -344,13 +337,11 @@ def train(
         val_e_mae /= max(n_val, 1)
         val_f_mae /= max(n_val, 1)
 
-        # Recompute run ETA with updated epoch_times
         avg_epoch_s = sum(epoch_times) / len(epoch_times)
         epochs_left = epochs - (epoch + 1)
         eta_run_str = _fmt_seconds(avg_epoch_s * epochs_left)
         elapsed_str = _fmt_seconds(time.perf_counter() - run_start)
 
-        # Checkpoint indicator
         ckpt_flag = ""
         if val_f_mae < best_val_force_mae:
             best_val_force_mae = val_f_mae
@@ -362,7 +353,6 @@ def train(
                 os.path.join(out_dir, "best.pt"),
             )
 
-        # Epoch summary line (always printed, replaces tqdm bar)
         print(
             f"  Ep {epoch+1:>3}/{epochs} "
             f"| loss={train_loss_sum/max(n_train,1):.4f} "
