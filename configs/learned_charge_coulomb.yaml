@@ -1,22 +1,21 @@
 name: learned_charge_coulomb
 use_charge: true
 use_coulomb: true
+
+# Tighter Coulomb stabilization (bug-fix run 3):
+# - warmup 5→15: gives local branch 15 epochs to establish force basin
+#   before Coulomb Hessian enters at λ=1.0
+# - charge_init_scale 1e-4→1e-5: ~10× smaller charges at Coulomb turn-on,
+#   further reduces second-order gradient magnitude at λ→1
+# - Per-branch grad clipping in train.py (charge branch max_norm=0.1)
+#   is the primary fix; these config changes are defence-in-depth.
+lambda_coul_warmup_epochs: 15
+charge_init_scale: 1.0e-5
+
 hidden: 64
-epochs: 150
+batch_size: 32
+num_workers: 0
+epochs: 30
 lr: 1.0e-3
 w_E: 1.0
 w_F: 100.0
-h5_path: data/transition1x.h5
-splits_json: splits.json
-batch_size: 32
-num_workers: 4
-# Near-zero charge-head final-layer init prevents Coulomb explosion at step 0.
-# Tightened to 1e-4 (was 1e-3) to keep early Coulomb gradients negligible
-# until the local force basin is established (~ep5-10).
-charge_init_scale: 1.0e-4
-# lambda_coul_warmup_epochs ramps Coulomb scale 0->1 linearly over N epochs.
-# Set to 5 (was 20) so Coulomb is fully on by ep5 while charges are still
-# near-zero from charge_init_scale — this avoids the shield racing to
-# compensate large charges before forces converge. With 20/30 the ramp was
-# too aggressive: F_MAE degraded monotonically from ep5 to ep16 (0.68->2.16).
-lambda_coul_warmup_epochs: 5

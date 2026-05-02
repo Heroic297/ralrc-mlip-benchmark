@@ -248,8 +248,24 @@ def train(
             p.requires_grad_(False)
         model.shield.requires_grad_(False)
 
-    params = list(model.parameters()) + list(atom_ref.parameters())
-    optimizer = torch.optim.Adam(params, lr=lr)
+    # Split parameters into local (MACE trunk + atom_ref) and charge-branch
+    # (charge_head + shield) for separate gradient clipping.
+    # The Coulomb path uses create_graph=True for force computation, which
+    # builds second-order gradient paths through the charge branch. Without
+    # per-branch clipping, the Coulomb Hessian can dominate the optimizer
+    # step and drive F_MAE up even as train_loss decreases.
+    local_params = list(atom_ref.parameters())
+    charge_params = []
+    for name, p in model.named_parameters():
+        if not p.requires_grad:
+            continue
+        if "charge_head" in name or "shield" in name:
+            charge_params.append(p)
+        else:
+            local_params.append(p)
+
+    all_params = local_params + charge_params
+    optimizer = torch.optim.Adam(all_params, lr=lr)
 
     best_val_force_mae = float("inf")
     best_epoch = -1
@@ -309,7 +325,15 @@ def train(
                     loss.backward()
                     batch_loss += loss.item() * n_mol
 
-                nn.utils.clip_grad_norm_(params, max_norm=10.0)
+                # Per-branch gradient clipping:
+                # - local trunk (MACE layers + atom_ref): max_norm=10.0
+                # - charge branch (charge_head + shield): max_norm=0.1
+                # Tight clipping on the charge branch prevents Coulomb
+                # second-order gradients from dominating optimizer steps
+                # before the local force basin is established.
+                nn.utils.clip_grad_norm_(local_params, max_norm=10.0)
+                if charge_params:
+                    nn.utils.clip_grad_norm_(charge_params, max_norm=0.1)
                 optimizer.step()
 
                 train_loss_sum += batch_loss
