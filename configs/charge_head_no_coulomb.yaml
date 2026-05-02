@@ -1,4 +1,9 @@
 name: charge_head_no_coulomb
+# use_charge=true: charge head is active and trained (charges learned implicitly
+# through energy head, no explicit 1/r Coulomb term). This is intentionally
+# distinct from local_mace_style — the charge head participates in the forward
+# pass and its parameters receive gradients. The freeze block in train.py only
+# fires when BOTH use_charge=false AND use_coulomb=false.
 use_charge: true
 use_coulomb: false
 hidden: 64

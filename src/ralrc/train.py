@@ -237,7 +237,13 @@ def train(
         print(f"[train] Loaded atom refs from {atom_refs_json}: "
               f"{ {s: round(float(v), 2) for s, v in e_ref_data.items()} }")
 
-    if not model_cfg.get("use_charge", True):
+    # Only freeze the charge head and shield when BOTH use_charge=false AND
+    # use_coulomb=false (i.e. pure local baseline with no charge machinery).
+    # When use_charge=true but use_coulomb=false (charge_head_no_coulomb),
+    # the charge head must remain trainable so charges are learned implicitly
+    # through the energy head — otherwise this model is identical to
+    # local_mace_style and the ablation is invalid.
+    if not model_cfg.get("use_charge", True) and not model_cfg.get("use_coulomb", True):
         for p in model.charge_head.parameters():
             p.requires_grad_(False)
         model.shield.requires_grad_(False)
