@@ -1,7 +1,10 @@
 {
-  "best_val_force_mae_eV_ang": 34.910240132528166,
-  "best_epoch": 1,
-  "n_train_frames": 23576,
-  "n_val_frames": 9978,
-  "seed": 17
+  "best_val_force_mae_eV_ang": 0.16138670369114372,
+  "best_epoch": 29,
+  "n_train_frames": 187296,
+  "n_val_frames": 59332,
+  "seed": 17,
+  "batch_size": 32,
+  "num_workers": 0,
+  "total_wall_s": 47920.2321562
 }
