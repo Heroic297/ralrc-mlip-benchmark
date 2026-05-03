@@ -2,15 +2,13 @@ name: learned_charge_coulomb
 use_charge: true
 use_coulomb: true
 
-# Tighter Coulomb stabilization (bug-fix run 3):
-# - warmup 5→15: gives local branch 15 epochs to establish force basin
-#   before Coulomb Hessian enters at λ=1.0
-# - charge_init_scale 1e-4→1e-5: ~10× smaller charges at Coulomb turn-on,
-#   further reduces second-order gradient magnitude at λ→1
-# - Per-branch grad clipping in train.py (charge branch max_norm=0.1)
-#   is the primary fix; these config changes are defence-in-depth.
-lambda_coul_warmup_epochs: 15
-charge_init_scale: 1.0e-5
+# Root-cause fix: q.detach() in _coulomb_energy (model_clean.py) cuts the
+# charge-response force path dq/dh * dh/dR, so the Coulomb Hessian no longer
+# diverges during training. Warmup and charge_init_scale are restored to the
+# original working values; aggressive settings were compensating for the
+# wrong problem.
+lambda_coul_warmup_epochs: 5
+charge_init_scale: 1.0e-4
 
 hidden: 64
 batch_size: 32
