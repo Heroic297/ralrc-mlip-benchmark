@@ -184,10 +184,25 @@ class ChargeAwarePotentialClean(nn.Module):
         return q
 
     def _coulomb_energy(self, q: torch.Tensor, R: torch.Tensor, Z: torch.Tensor) -> torch.Tensor:
-        """Delegates to module-level shielded_coulomb_energy; returns 0 if use_coulomb=False."""
+        """Delegates to module-level shielded_coulomb_energy; returns 0 if use_coulomb=False.
+
+        Charges are detached from the force graph so that dE_coul/dR flows
+        only through the direct 1/r path, not through the charge-response
+        path dq/dh * dh/dR.  This eliminates the second-order Coulomb
+        Hessian that caused divergence in learned_charge_coulomb training.
+
+        Charges still receive gradients from the energy loss (w_E term)
+        because E_coul(q_detached, R) depends on q via the forward value —
+        the detach only cuts the backward path through the force graph.
+        """
         if not self.use_coulomb:
             return torch.zeros((), device=R.device, dtype=R.dtype)
-        return self.lambda_coul * shielded_coulomb_energy(q, R, Z, self.shield)
+        # Detach q so dE_coul/dR only flows through the direct 1/r path,
+        # not through the charge-response path dq/dh * dh/dR.
+        # Charges still train normally via the energy loss (E_coul depends on q,
+        # and q depends on charge_head params through the energy backward pass).
+        q_detached = q.detach()
+        return self.lambda_coul * shielded_coulomb_energy(q_detached, R, Z, self.shield)
 
     # ------------------------------------------------------------------
     # Public API
