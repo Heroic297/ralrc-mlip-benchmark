@@ -114,6 +114,21 @@ def _fmt_seconds(s: float) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Atom reference key parsing
+# ---------------------------------------------------------------------------
+
+# Accepts both symbol keys ("H", "C") and integer-string keys ("1", "6").
+# e_ref.json from the fitted atom refs uses integer string keys; this mapping
+# handles both so atom refs load correctly regardless of key format.
+_SYMBOL_TO_Z: dict[str, int] = {
+    "H": 1,  "1": 1,
+    "C": 6,  "6": 6,
+    "N": 7,  "7": 7,
+    "O": 8,  "8": 8,
+}
+
+
+# ---------------------------------------------------------------------------
 # Main training function
 # ---------------------------------------------------------------------------
 
@@ -222,20 +237,22 @@ def train(
     atom_ref = AtomRefEnergy().to(device)
 
     # Load pre-fitted atom reference energies if provided.
-    # Uses .data[z, 0] = float(val) to write directly into the embedding's
-    # underlying storage on whatever device atom_ref lives on, bypassing
-    # autograd and avoiding the CPU/CUDA device mismatch from torch.tensor().
+    # Accepts both symbol keys ("H") and integer-string keys ("1") via
+    # _SYMBOL_TO_Z, which maps both formats. Previously only symbol keys
+    # were matched, causing e_ref.json (integer keys) to silently no-op.
     if atom_refs_json is not None and os.path.isfile(atom_refs_json):
         with open(atom_refs_json) as f:
             e_ref_data = json.load(f)
-        _symbol_to_z = {"H": 1, "C": 6, "N": 7, "O": 8}
+        loaded = {}
         with torch.no_grad():
             for sym, e_val in e_ref_data.items():
-                z = _symbol_to_z.get(sym)
+                z = _SYMBOL_TO_Z.get(sym)
                 if z is not None:
                     atom_ref.ref.weight.data[z, 0] = float(e_val)
-        print(f"[train] Loaded atom refs from {atom_refs_json}: "
-              f"{ {s: round(float(v), 2) for s, v in e_ref_data.items()} }")
+                    loaded[sym] = round(float(e_val), 2)
+        print(f"[train] Loaded atom refs from {atom_refs_json}: {loaded}")
+        if not loaded:
+            print("[train] WARNING: No atom ref keys matched. E_MAE will be invalid.")
 
     # Only freeze the charge head and shield when BOTH use_charge=false AND
     # use_coulomb=false (i.e. pure local baseline with no charge machinery).
